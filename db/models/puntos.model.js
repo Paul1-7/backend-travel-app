@@ -19,7 +19,7 @@ const PuntosSchema = {
     type: DataTypes.FLOAT,
     allowNull: false,
     validate: {
-      is: msg.isFloat,
+      isFloat: msg.isFloat,
       notNull: msg.notNull
     }
   },
@@ -27,7 +27,7 @@ const PuntosSchema = {
     type: DataTypes.FLOAT,
     allowNull: false,
     validate: {
-      is: msg.isFloat,
+      isFloat: msg.isFloat,
       notNull: msg.notNull
     }
   },

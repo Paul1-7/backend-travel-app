@@ -11,14 +11,6 @@ async function BuscarPuntos(id) {
   return await models.Puntos.findByPk(id)
 }
 
-async function BuscarPuntosPorIds(ids) {
-  return await models.Puntos.findAll({
-    where: {
-      id: { [Op.in]: ids }
-    }
-  })
-}
-
 async function AgregarPuntos(punto) {
   return await models.Puntos.create(punto)
 }
@@ -38,6 +30,5 @@ module.exports = {
   BuscarPuntos,
   AgregarPuntos,
   ModificarPuntos,
-  EliminarPuntos,
-  BuscarPuntosPorIds
+  EliminarPuntos
 }

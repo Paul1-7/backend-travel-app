@@ -1,6 +1,6 @@
 const { Model, DataTypes } = require('sequelize')
 const msg = require('../../utils/validationsMsg.js')
-const { PUNTOS_TABLE } = require('./puntos.model.js')
+const { LUGARES_TABLE } = require('./lugares.model.js')
 const { RUTAS_TABLE } = require('./rutas.model.js')
 
 const ITINERARIO_TABLE = 'Itinerario'
@@ -31,16 +31,16 @@ const ItinerarioSchema = {
     onUpdate: 'CASCADE',
     onDelete: 'SET NULL'
   },
-  idPunto: {
+  idLugar: {
     type: DataTypes.STRING,
-    field: 'id_punto',
+    field: 'id_lugar',
     allowNull: false,
     validate: {
       is: msg.isAlphanumeric,
       notNull: msg.notNull
     },
     references: {
-      model: PUNTOS_TABLE,
+      model: LUGARES_TABLE,
       key: 'id'
     },
     onUpdate: 'CASCADE',
@@ -76,9 +76,7 @@ const ItinerarioSchema = {
 }
 
 class Itinerario extends Model {
-  static associate(models) {
-    //this.hasMany(models.Productos, { foreignKey: 'id_cat' }) uno a muchos
-  }
+  static associate(models) {}
 
   static config(sequelize) {
     return {

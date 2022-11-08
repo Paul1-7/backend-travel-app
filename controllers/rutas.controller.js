@@ -4,7 +4,7 @@ const {
   EliminarItinerario,
   ModificarItinerario
 } = require('../services/itinerario.service.js')
-const { BuscarPuntosPorIds } = require('../services/puntos.service.js')
+const { BuscarLugaresPorIds } = require('../services/lugares.service.js')
 const services = require('../services/rutas.service.js')
 
 const msg = {
@@ -42,17 +42,17 @@ const AgregarRutas = async (req, res, next) => {
 
     console.log([{ ruta }, { itinerarios }])
 
-    const idPuntos = itinerarios.map((punto) => punto.idPunto)
-    const puntos = await BuscarPuntosPorIds(idPuntos)
+    const idLugares = itinerarios.map((lugar) => lugar.idLugar)
+    const lugar = await BuscarLugaresPorIds(idLugares)
 
-    if (itinerarios.length !== puntos.length || itinerarios.length <= 0)
+    if (itinerarios.length !== lugar.length || itinerarios.length <= 0)
       return ERROR_RESPONSE.notAcceptable(msg.notValid, res)
 
     const newruta = await services.AgregarRutas(ruta)
 
-    const newItinerarios = itinerarios.map((punto) => {
+    const newItinerarios = itinerarios.map((itinerario) => {
       return {
-        ...punto,
+        ...itinerario,
         idRuta: newruta.toJSON().id
       }
     })

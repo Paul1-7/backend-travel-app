@@ -9,14 +9,14 @@ const RutasSchema = {
     primaryKey: true,
     type: DataTypes.STRING,
     defaultValue: DataTypes.UUIDV4,
-  
+
     validate: {
       isUUID: 4
     }
   },
   titulo: {
     type: DataTypes.STRING,
-   
+
     unique: true,
     allowNull: false,
     validate: {
@@ -26,7 +26,7 @@ const RutasSchema = {
   },
   descripcion: {
     type: DataTypes.STRING,
-    
+
     allowNull: false,
     validate: {
       is: msg.isAlphanumeric,
@@ -35,7 +35,7 @@ const RutasSchema = {
   },
   dias: {
     type: DataTypes.STRING,
-   
+
     allowNull: false,
     validate: {
       is: msg.isAlphanumeric,
@@ -44,7 +44,7 @@ const RutasSchema = {
   },
   horarios: {
     type: DataTypes.STRING,
-   
+
     allowNull: false,
     validate: {
       is: msg.isAlphanumeric,
@@ -53,7 +53,7 @@ const RutasSchema = {
   },
   duracion: {
     type: DataTypes.STRING,
-  
+
     allowNull: false,
     validate: {
       is: msg.isAlphanumeric,
@@ -62,7 +62,7 @@ const RutasSchema = {
   },
   precio: {
     type: DataTypes.FLOAT,
-  
+
     allowNull: false,
     validate: {
       is: msg.isAlphanumeric,
@@ -71,7 +71,7 @@ const RutasSchema = {
   },
   estado: {
     type: DataTypes.INTEGER,
-  
+
     allowNull: false,
     defaultValue: 1,
     validate: {
@@ -82,13 +82,13 @@ const RutasSchema = {
 
 class Rutas extends Model {
   static associate(models) {
-  //  this.hasMany(models.Productos, { foreignKey: 'id_cat' })
-  this.belongsToMany(models.Puntos, { //muchos a muchos
-    through: models.Itinerario,
-    as: 'itinerarios',
-    foreignKey: 'idRuta',
-    otherKey: 'idPunto'
-  })
+    this.belongsToMany(models.Lugares, {
+      //muchos a muchos
+      through: models.Itinerario,
+      as: 'itinerarios',
+      foreignKey: 'idRuta',
+      otherKey: 'idLugar'
+    })
   }
 
   static config(sequelize) {
@@ -101,4 +101,4 @@ class Rutas extends Model {
   }
 }
 
-module.exports = {  Rutas, RutasSchema,  RUTAS_TABLE }
+module.exports = { Rutas, RutasSchema, RUTAS_TABLE }

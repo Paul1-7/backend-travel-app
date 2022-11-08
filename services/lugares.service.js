@@ -1,3 +1,4 @@
+const { Op } = require('sequelize')
 const { models } = require('../libs/sequelize.js')
 
 async function ListarLugares() {
@@ -22,10 +23,19 @@ async function EliminarLugares(id) {
   return await user?.destroy()
 }
 
+async function BuscarLugaresPorIds(ids) {
+  return await models.Lugares.findAll({
+    where: {
+      id: { [Op.in]: ids }
+    }
+  })
+}
+
 module.exports = {
   ListarLugares,
   BuscarLugares,
   AgregarLugares,
   ModificarLugares,
-  EliminarLugares
+  EliminarLugares,
+  BuscarLugaresPorIds
 }
