@@ -33,24 +33,6 @@ const RutasSchema = {
       notNull: msg.notNull
     }
   },
-  dias: {
-    type: DataTypes.STRING,
-
-    allowNull: false,
-    validate: {
-      is: msg.isAlphanumeric,
-      notNull: msg.notNull
-    }
-  },
-  horarios: {
-    type: DataTypes.STRING,
-
-    allowNull: false,
-    validate: {
-      is: msg.isAlphanumeric,
-      notNull: msg.notNull
-    }
-  },
   duracion: {
     type: DataTypes.STRING,
 
@@ -83,11 +65,24 @@ const RutasSchema = {
 class Rutas extends Model {
   static associate(models) {
     this.belongsToMany(models.Lugares, {
-      //muchos a muchos
       through: models.Itinerario,
       as: 'itinerarios',
       foreignKey: 'idRuta',
       otherKey: 'idLugar'
+    })
+
+    this.belongsToMany(models.Dias, {
+      through: models.Dias_Rutas,
+      as: 'dias',
+      foreignKey: 'idRuta',
+      otherKey: 'idDia'
+    })
+
+    this.belongsToMany(models.Horarios, {
+      through: models.Horarios_Rutas,
+      as: 'horarios',
+      foreignKey: 'idRuta',
+      otherKey: 'idHorario'
     })
   }
 

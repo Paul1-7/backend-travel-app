@@ -2,13 +2,29 @@ const { models } = require('../libs/sequelize.js')
 
 async function ListarRutas() {
   return await models.Rutas.findAll({
-    include: ["itinerarios"]
+    include: ['itinerarios']
   })
 }
 
 async function BuscarRutas(id) {
   return await models.Rutas.findByPk(id, {
-    include: ["itinerarios"]
+    include: [
+      'itinerarios',
+      {
+        model: models.Dias,
+        as: 'dias',
+        through: {
+          attributes: []
+        }
+      },
+      {
+        model: models.Horarios,
+        as: 'horarios',
+        through: {
+          attributes: []
+        }
+      }
+    ]
   })
 }
 
