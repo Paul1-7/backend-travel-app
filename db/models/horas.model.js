@@ -1,9 +1,9 @@
 const { Model, DataTypes } = require('sequelize')
 const msg = require('../../utils/validationsMsg.js')
 
-const HORARIOS_TABLE = 'Horarios'
+const HORAS_TABLE = 'Horas'
 
-const HorariosSchema = {
+const HorasSchema = {
   id: {
     allowNull: false,
     primaryKey: true,
@@ -30,20 +30,37 @@ const HorariosSchema = {
       is: msg.isAlphanumeric,
       notNull: msg.notNull
     }
+  },
+  tipo: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    validate: {
+      isNumeric: msg.isNumeric,
+      notNull: msg.notNull
+    }
   }
 }
 
-class Horarios extends Model {
-  static associate(models) {}
+class Horas extends Model {
+  static associate(models) {
+    this.hasMany(models.Programacion, {
+      as: 'programacion',
+      foreignKey: 'idHora'
+    })
+    this.hasMany(models.Horarios_Atencion, {
+      as: 'horarios',
+      foreignKey: 'idHora'
+    })
+  }
 
   static config(sequelize) {
     return {
       sequelize,
-      tableName: HORARIOS_TABLE,
-      modelName: HORARIOS_TABLE,
+      tableName: HORAS_TABLE,
+      modelName: HORAS_TABLE,
       timestamps: false
     }
   }
 }
 
-module.exports = { Horarios, HorariosSchema, HORARIOS_TABLE }
+module.exports = { Horas, HorasSchema, HORAS_TABLE }

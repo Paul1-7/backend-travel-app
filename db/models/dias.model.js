@@ -25,7 +25,16 @@ const DiasSchema = {
 }
 
 class Dias extends Model {
-  static associate(models) {}
+  static associate(models) {
+    this.hasMany(models.Programacion, {
+      as: 'programacion',
+      foreignKey: 'idDia'
+    })
+    this.hasMany(models.Horarios_Atencion, {
+      as: 'horarios',
+      foreignKey: 'idDia'
+    })
+  }
 
   static config(sequelize) {
     return {

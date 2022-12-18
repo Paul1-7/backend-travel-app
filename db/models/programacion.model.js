@@ -1,11 +1,12 @@
 const { Model, DataTypes } = require('sequelize')
 const msg = require('../../utils/validationsMsg.js')
 const { DIAS_TABLE } = require('./dias.model.js')
+const { HORAS_TABLE } = require('./horas.model.js')
 const { RUTAS_TABLE } = require('./rutas.model.js')
 
-const DIAS_RUTAS_TABLE = 'Dias_Rutas'
+const PROGRAMACION_TABLE = 'Programacion'
 
-const DiasRutasSchema = {
+const ProgramacionSchema = {
   id: {
     allowNull: false,
     primaryKey: true,
@@ -30,6 +31,21 @@ const DiasRutasSchema = {
     onUpdate: 'CASCADE',
     onDelete: 'SET NULL'
   },
+  idHora: {
+    type: DataTypes.STRING,
+    field: 'id_hora',
+    allowNull: false,
+    validate: {
+      is: msg.isAlphanumeric,
+      notNull: msg.notNull
+    },
+    references: {
+      model: HORAS_TABLE,
+      key: 'id'
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL'
+  },
   idRuta: {
     type: DataTypes.STRING,
     field: 'id_ruta',
@@ -47,17 +63,30 @@ const DiasRutasSchema = {
   }
 }
 
-class DiasRutas extends Model {
-  static associate(models) {}
+class Programacion extends Model {
+  static associate(models) {
+    this.belongsTo(models.Dias, {
+      as: 'dia',
+      foreignKey: 'idDia'
+    })
+    this.belongsTo(models.Horas, {
+      as: 'horas',
+      foreignKey: 'idHora'
+    })
+    this.belongsTo(models.Rutas, {
+      as: 'ruta',
+      foreignKey: 'idRuta'
+    })
+  }
 
   static config(sequelize) {
     return {
       sequelize,
-      tableName: DIAS_RUTAS_TABLE,
-      modelName: DIAS_RUTAS_TABLE,
+      tableName: PROGRAMACION_TABLE,
+      modelName: PROGRAMACION_TABLE,
       timestamps: false
     }
   }
 }
 
-module.exports = { DiasRutas, DiasRutasSchema, DIAS_RUTAS_TABLE }
+module.exports = { Programacion, ProgramacionSchema, PROGRAMACION_TABLE }

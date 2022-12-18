@@ -20,16 +20,16 @@ const { UsuRoles, UsurolesSchema } = require('./usuroles.model.js')
 const { Itinerario, ItinerarioSchema } = require('./itinerario.model.js')
 const { RutaContra, RutacontraSchema } = require('./rutacontra.model.js')
 const { RutaReserva, RutareservaSchema } = require('./rutareserva.model.js')
-const { DiasRutas, DiasRutasSchema } = require('./diasRutas.model.js')
+const { Programacion, ProgramacionSchema } = require('./programacion.model.js')
 const { Dias, DiasSchema } = require('./dias.model.js')
-const { Horarios, HorariosSchema } = require('./horarios.model.js')
+const { Horas, HorasSchema } = require('./horas.model.js')
 const {
-  HorariosRutasSchema,
-  HorariosRutas
-} = require('./horarioRutas.model.js')
+  HorariosAtencion,
+  HorariosAtencionSchema
+} = require('./horariosAtencion.model.js')
 
 function setUpModels(sequelize) {
-  Horarios.init(HorariosSchema, Horarios.config(sequelize))
+  Horas.init(HorasSchema, Horas.config(sequelize))
   Dias.init(DiasSchema, Dias.config(sequelize))
   Rutas.init(RutasSchema, Rutas.config(sequelize))
   Puntos.init(PuntosSchema, Puntos.config(sequelize))
@@ -45,17 +45,23 @@ function setUpModels(sequelize) {
   Roles.init(RolesSchema, Roles.config(sequelize))
   UsuRoles.init(UsurolesSchema, UsuRoles.config(sequelize))
   Itinerario.init(ItinerarioSchema, Itinerario.config(sequelize))
-  DiasRutas.init(DiasRutasSchema, DiasRutas.config(sequelize))
-  HorariosRutas.init(HorariosRutasSchema, HorariosRutas.config(sequelize))
+  Programacion.init(ProgramacionSchema, Programacion.config(sequelize))
+  HorariosAtencion.init(
+    HorariosAtencionSchema,
+    HorariosAtencion.config(sequelize)
+  )
 
   RutaContra.init(RutacontraSchema, RutaContra.config(sequelize))
   RutaReserva.init(RutareservaSchema, RutaReserva.config(sequelize))
 
   Contrataciones.associate(sequelize.models)
+  Programacion.associate(sequelize.models)
+  HorariosAtencion.associate(sequelize.models)
   Reservas.associate(sequelize.models)
   Usuarios.associate(sequelize.models)
   Rutas.associate(sequelize.models)
   Dias.associate(sequelize.models)
+  Horas.associate(sequelize.models)
   Lugares.associate(sequelize.models)
   Puntos.associate(sequelize.models)
 }

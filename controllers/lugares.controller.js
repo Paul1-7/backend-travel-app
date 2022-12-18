@@ -1,11 +1,13 @@
 const { ERROR_RESPONSE } = require('../middlewares/error.handle.js')
+const { BuscarDiasPorIds } = require('../services/dias.service.js')
 const services = require('../services/lugares.service.js')
 const { AgregarPuntos } = require('../services/puntos.service.js')
 
 const msg = {
   notFound: 'Lugar no encontrado',
   delete: 'Lugar eliminado',
-  addSuccess: 'Lugar guardado con exito'
+  addSuccess: 'Lugar guardado con exito',
+  notValid: 'La información no es valida'
 }
 
 const ListarLugares = async (req, res, next) => {
@@ -31,9 +33,19 @@ const BuscarLugares = async (req, res, next) => {
 
 const AgregarLugares = async (req, res, next) => {
   try {
-    const { lugar, punto } = req.body
-    console.log('TCL: AgregarLugares -> punto', punto)
-    console.log('TCL: AgregarLugares -> lugar', lugar)
+    const { lugar, punto, horarios, idDias } = req.body
+
+    if (
+      idDias.length !== horarios.length ||
+      idDias.length === 0 ||
+      horarios.length === 0
+    )
+      return ERROR_RESPONSE.notAcceptable(msg.notValid, res)
+
+    const dias = await BuscarDiasPorIds(idDias)
+
+    if (dias.length !== idDias.length)
+      return ERROR_RESPONSE.notAcceptable(msg.notValid, res)
 
     const lugarAgregado = await services.AgregarLugares(lugar)
     const { id } = lugarAgregado

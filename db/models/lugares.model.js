@@ -33,15 +33,6 @@ const LugaresSchema = {
       notNull: msg.notNull
     }
   },
-  horariosAtencion: {
-    type: DataTypes.STRING,
-    field: 'horarios_atencion',
-    allowNull: false,
-    validate: {
-      is: msg.isAlphanumeric,
-      notNull: msg.notNull
-    }
-  },
   estado: {
     type: DataTypes.INTEGER,
 
@@ -56,7 +47,11 @@ const LugaresSchema = {
 class Lugares extends Model {
   static associate(models) {
     this.hasMany(models.Puntos, { foreignKey: 'idLugar', as: 'punto' })
-    this.hasMany(models.Imagenes, { foreignKey: 'idLugar' })
+
+    this.hasMany(models.Horarios_Atencion, {
+      as: 'horariosAtencion',
+      foreignKey: 'idLugar'
+    })
   }
 
   static config(sequelize) {

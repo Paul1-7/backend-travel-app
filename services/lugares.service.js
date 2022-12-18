@@ -2,11 +2,38 @@ const { Op } = require('sequelize')
 const { models } = require('../libs/sequelize.js')
 
 async function ListarLugares() {
-  return await models.Lugares.findAll({ include: 'punto' })
+  return await models.Lugares.findAll()
 }
 
 async function BuscarLugares(id) {
-  return await models.Lugares.findByPk(id)
+  return await models.Lugares.findByPk(id, {
+    include: [
+      'punto',
+      {
+        model: models.Horarios_Atencion,
+        as: 'horariosAtencion',
+        attributes: {
+          exclude: ['idDia', 'idHora', 'idLugar']
+        },
+        include: [
+          {
+            model: models.Dias,
+            as: 'dia',
+            attributes: {
+              exclude: ['id']
+            }
+          },
+          {
+            model: models.Horas,
+            as: 'horas',
+            attributes: {
+              exclude: ['id']
+            }
+          }
+        ]
+      }
+    ]
+  })
 }
 
 async function AgregarLugares(lugar) {

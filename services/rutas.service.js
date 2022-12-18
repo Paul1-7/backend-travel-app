@@ -11,25 +11,34 @@ async function BuscarRutas(id) {
     include: [
       'itinerarios',
       {
-        model: models.Dias,
-        as: 'dias',
-        through: {
-          attributes: []
-        }
-      },
-      {
-        model: models.Horarios,
-        as: 'horarios',
-        through: {
-          attributes: []
-        }
+        model: models.Programacion,
+        as: 'programacion',
+        attributes: {
+          exclude: ['idDia', 'idHora', 'idRuta']
+        },
+        include: [
+          {
+            model: models.Dias,
+            as: 'dia',
+            attributes: {
+              exclude: ['id']
+            }
+          },
+          {
+            model: models.Horas,
+            as: 'horas',
+            attributes: {
+              exclude: ['id']
+            }
+          }
+        ]
       }
     ]
   })
 }
 
 async function AgregarRutas(ruta) {
-  return await models.Rutas.create(ruta)
+  return await (await models.Rutas.create(ruta)).toJSON()
 }
 
 async function ModificarRutas(id, cambio) {

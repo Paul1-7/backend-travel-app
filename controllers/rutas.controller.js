@@ -1,16 +1,19 @@
 const { ERROR_RESPONSE } = require('../middlewares/error.handle.js')
+const { BuscarDiasPorIds } = require('../services/dias.service.js')
+const { BuscarHorasPorIds } = require('../services/horas.service.js')
 const {
   AgregarItinerario,
   EliminarItinerario,
   ModificarItinerario
 } = require('../services/itinerario.service.js')
 const { BuscarLugaresPorIds } = require('../services/lugares.service.js')
+const { AgregarProgramaciones } = require('../services/programacion.service.js')
 const services = require('../services/rutas.service.js')
 
 const msg = {
   notFound: 'Ruta no encontrada',
   delete: 'Ruta eliminada',
-  notValid: 'el punto no es valido',
+  notValid: 'La información no es valida',
   addSuccess: 'Ruta guardada'
 }
 
@@ -38,26 +41,46 @@ const BuscarRutas = async (req, res, next) => {
 const AgregarRutas = async (req, res, next) => {
   try {
     const { body } = req
-    const { itinerarios, ...ruta } = body
+    const { itinerarios, idDias, idHorarios, ...ruta } = body
 
-    console.log([{ ruta }, { itinerarios }])
+    if (
+      idDias.length !== idHorarios.length ||
+      itinerarios.length === 0 ||
+      idDias.length === 0 ||
+      idHorarios.length === 0
+    )
+      return ERROR_RESPONSE.notAcceptable(msg.notValid, res)
 
     const idLugares = itinerarios.map((lugar) => lugar.idLugar)
     const lugar = await BuscarLugaresPorIds(idLugares)
 
-    if (itinerarios.length !== lugar.length || itinerarios.length <= 0)
+    const dias = await BuscarDiasPorIds(idDias)
+    const horarios = await BuscarHorasPorIds(idHorarios)
+
+    if (
+      itinerarios.length !== lugar.length ||
+      dias.length !== idDias.length ||
+      horarios.length !== idHorarios.length
+    )
       return ERROR_RESPONSE.notAcceptable(msg.notValid, res)
 
-    const newruta = await services.AgregarRutas(ruta)
+    const newRuta = await services.AgregarRutas(ruta)
 
     const newItinerarios = itinerarios.map((itinerario) => {
       return {
         ...itinerario,
-        idRuta: newruta.toJSON().id
+        idRuta: newRuta.id
       }
     })
 
+    const newProgramacion = idDias.map((idDia, index) => ({
+      idRuta: newRuta.id,
+      idDia,
+      idHora: idHorarios[index]
+    }))
+
     await AgregarItinerario(newItinerarios)
+    await AgregarProgramaciones(newProgramacion)
 
     res.json({
       message: msg.addSuccess

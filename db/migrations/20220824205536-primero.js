@@ -17,13 +17,13 @@ const { ItinerarioSchema } = require('../models/itinerario.model')
 const { RutacontraSchema } = require('../models/rutacontra.model')
 const { RutareservaSchema } = require('../models/rutareserva.model')
 const { DiasSchema } = require('../models/dias.model')
-const { DiasRutasSchema } = require('../models/diasRutas.model')
-const { HorariosSchema } = require('../models/horarios.model')
-const { HorariosRutasSchema } = require('../models/horarioRutas.model')
+const { ProgramacionSchema } = require('../models/programacion.model')
+const { HorasSchema } = require('../models/horas.model')
+const { HorariosAtencionSchema } = require('../models/horariosAtencion.model')
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Horarios', HorariosSchema)
+    await queryInterface.createTable('Horas', HorasSchema)
     await queryInterface.createTable('Dias', DiasSchema)
     await queryInterface.createTable('Rutas', RutasSchema)
     await queryInterface.createTable('Contrataciones', ContratacionesSchema)
@@ -39,23 +39,26 @@ module.exports = {
     await queryInterface.createTable('Roles', RolesSchema)
     await queryInterface.createTable('UsuRoles', UsurolesSchema)
     await queryInterface.createTable('Itinerario', ItinerarioSchema)
-    await queryInterface.createTable('Horarios_Rutas', HorariosRutasSchema)
-    await queryInterface.createTable('Dias_Rutas', DiasRutasSchema)
+    await queryInterface.createTable('Programacion', ProgramacionSchema)
+    await queryInterface.createTable(
+      'Horarios_Atencion',
+      HorariosAtencionSchema
+    )
     await queryInterface.createTable('RutaContra', RutacontraSchema)
     await queryInterface.createTable('RutaReserva', RutareservaSchema)
   },
 
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('UsuRoles')
-    await queryInterface.dropTable('Horarios_Rutas')
-    await queryInterface.dropTable('Dias_Rutas')
+    await queryInterface.dropTable('Programacion')
+    await queryInterface.dropTable('Horarios_Atencion')
     await queryInterface.dropTable('RutaContra')
     await queryInterface.dropTable('RutaReserva')
     await queryInterface.dropTable('Itinerario')
     await queryInterface.dropTable('Imagenes')
     await queryInterface.dropTable('Rutas')
     await queryInterface.dropTable('Dias')
-    await queryInterface.dropTable('Horarios')
+    await queryInterface.dropTable('Horas')
     await queryInterface.dropTable('Puntos')
     await queryInterface.dropTable('Lugares')
     await queryInterface.dropTable('Reservas')

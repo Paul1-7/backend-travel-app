@@ -71,18 +71,9 @@ class Rutas extends Model {
       otherKey: 'idLugar'
     })
 
-    this.belongsToMany(models.Dias, {
-      through: models.Dias_Rutas,
-      as: 'dias',
-      foreignKey: 'idRuta',
-      otherKey: 'idDia'
-    })
-
-    this.belongsToMany(models.Horarios, {
-      through: models.Horarios_Rutas,
-      as: 'horarios',
-      foreignKey: 'idRuta',
-      otherKey: 'idHorario'
+    this.hasMany(models.Programacion, {
+      as: 'programacion',
+      foreignKey: 'idRuta'
     })
   }
 
