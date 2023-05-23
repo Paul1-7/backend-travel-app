@@ -1,24 +1,21 @@
 const { Op } = require('sequelize')
 const { models } = require('../libs/sequelize.js')
 
-
 async function AgregarItinerario(data) {
-  
   return await models.Itinerario.bulkCreate(data)
 }
 
-async function EliminarItinerario(CodRuta) {
+async function EliminarItinerarioPorIdRuta(idRuta) {
   return await models.Itinerario.destroy({
     where: {
-      CodRuta
+      idRuta
     }
   })
 }
 
 async function ModificarItinerario(CodRuta, data) {
-  const removed = await EliminarItinerario(CodRuta)
-  const result =
-    removed > 0 ? await models.Itinerario.bulkCreate(data) : null
+  const removed = await EliminarItinerarioPorIdRuta(CodRuta)
+  const result = removed > 0 ? await models.Itinerario.bulkCreate(data) : null
   return result
 }
 
@@ -32,8 +29,8 @@ async function getProductsBySubsidiariesId(id) {
 
 module.exports = {
   AgregarItinerario,
-  
+
   getProductsBySubsidiariesId,
-  EliminarItinerario,
+  EliminarItinerarioPorIdRuta,
   ModificarItinerario
 }

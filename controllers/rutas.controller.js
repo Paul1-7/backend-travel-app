@@ -3,11 +3,14 @@ const { BuscarDiasPorIds } = require('../services/dias.service.js')
 const { BuscarHorasPorIds } = require('../services/horas.service.js')
 const {
   AgregarItinerario,
-  EliminarItinerario,
+  EliminarItinerarioPorIdRuta,
   ModificarItinerario
 } = require('../services/itinerario.service.js')
 const { BuscarLugaresPorIds } = require('../services/lugares.service.js')
-const { AgregarProgramaciones } = require('../services/programacion.service.js')
+const {
+  AgregarProgramaciones,
+  EliminarProgramacionesPorIdRuta
+} = require('../services/programacion.service.js')
 const services = require('../services/rutas.service.js')
 
 const msg = {
@@ -41,26 +44,25 @@ const BuscarRutas = async (req, res, next) => {
 const AgregarRutas = async (req, res, next) => {
   try {
     const { body } = req
-    const { itinerarios, idDias, idHorarios, ...ruta } = body
+    const { itinerarios, horarios, ...ruta } = body
 
-    if (
-      idDias.length !== idHorarios.length ||
-      itinerarios.length === 0 ||
-      idDias.length === 0 ||
-      idHorarios.length === 0
-    )
+    if (horarios.length === 0)
       return ERROR_RESPONSE.notAcceptable(msg.notValid, res)
 
     const idLugares = itinerarios.map((lugar) => lugar.idLugar)
     const lugar = await BuscarLugaresPorIds(idLugares)
 
-    const dias = await BuscarDiasPorIds(idDias)
-    const horarios = await BuscarHorasPorIds(idHorarios)
+    const idDias = horarios.map(({ idDia }) => idDia.id)
+    const idHoras = horarios.map(({ idHorario }) => idHorario).flat()
+    const horasUnicas = [...new Set(idHoras)]
+
+    const dataDias = await BuscarDiasPorIds(idDias)
+    const dataHorarios = await BuscarHorasPorIds(horasUnicas)
 
     if (
       itinerarios.length !== lugar.length ||
-      dias.length !== idDias.length ||
-      horarios.length !== idHorarios.length
+      dataDias.length !== idDias.length ||
+      horasUnicas.length !== dataHorarios.length
     )
       return ERROR_RESPONSE.notAcceptable(msg.notValid, res)
 
@@ -73,14 +75,16 @@ const AgregarRutas = async (req, res, next) => {
       }
     })
 
-    const newProgramacion = idDias.map((idDia, index) => ({
-      idRuta: newRuta.id,
-      idDia,
-      idHora: idHorarios[index]
-    }))
-
+    const newProgramacion = horarios.map(({ idDia, idHorario }) =>
+      idHorario.map((item) => ({
+        idRuta: newRuta.id,
+        idDia: idDia.id,
+        idHora: item
+      }))
+    )
+    // console.log(newProgramacion.flat())
     await AgregarItinerario(newItinerarios)
-    await AgregarProgramaciones(newProgramacion)
+    await AgregarProgramaciones(newProgramacion.flat())
 
     res.json({
       message: msg.addSuccess
@@ -123,12 +127,13 @@ const ModificarRutas = async (req, res, next) => {
 const EliminarRutas = async (req, res, next) => {
   try {
     const { id } = req.params
-    await EliminarItinerario(id)
+    await EliminarItinerarioPorIdRuta(id)
+    await EliminarProgramacionesPorIdRuta(id)
     const ruta = await services.EliminarRutas(id)
 
     if (!ruta) return ERROR_RESPONSE.notFound(msg.notFound, res)
 
-    res.json({ message: msg.delete })
+    res.json({ message: msg.delete, id })
   } catch (error) {
     next(error)
   }

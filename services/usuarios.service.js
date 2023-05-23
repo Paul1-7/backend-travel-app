@@ -7,8 +7,11 @@ async function ListarUsuarios() {
   })
 }
 
-async function BuscarUsuarios(id) {
-  return await models.Usuarios.findByPk(id)
+async function BuscarUsuarios(id, options) {
+  return await models.Usuarios.findByPk(id, {
+    include: ['roles'],
+    ...options
+  })
 }
 
 async function AgregarUsuarios(usuario) {
@@ -25,9 +28,17 @@ async function GetUsuariosPorRol(...nombreRoles) {
   return await models.Usuarios.findAll(options)
 }
 
-async function ModificarUsuarios(id, cambio) {
-  const user = await models.Usuarios.findByPk(id)
-  return await user?.update(cambio)
+async function ModificarUsuarios(id, cambio, options = {}) {
+  const { password } = cambio
+  const user = await models.Usuarios.findByPk(id, { ...options })
+
+  const newPassword =
+    password.length === 0 ? JSON.stringify(user).password : password
+
+  return await user?.update(
+    { ...cambio, password: newPassword },
+    { ...options }
+  )
 }
 
 async function EliminarUsuarios(id) {

@@ -2,7 +2,7 @@ const { Op } = require('sequelize')
 const { models } = require('../libs/sequelize.js')
 
 async function ListarLugares() {
-  return await models.Lugares.findAll()
+  return await models.Lugares.findAll({ include: ['punto'] })
 }
 
 async function BuscarLugares(id) {

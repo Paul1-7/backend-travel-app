@@ -1,16 +1,25 @@
+const { hash } = require('bcrypt')
 const { ERROR_RESPONSE } = require('../middlewares/error.handle.js')
 const {
   BuscarRolPorNombre,
-  BuscarRolPorIds
+  BuscarRolPorIds,
+  ListarRoles
 } = require('../services/roles.service.js')
 const services = require('../services/usuarios.service.js')
-const { AgregarRolUsuario } = require('../services/usuRoles.service.js')
+const {
+  AgregarRolUsuario,
+  actualizarRolUser
+} = require('../services/usuRoles.service.js')
+const sequelize = require('../libs/sequelize.js')
+const { existClientRol } = require('../utils/dataHandler.js')
+const { CLIENTE } = require('../config/roles.js')
 
 const msg = {
-  notFound: 'Usuario no encontrado',
-  delete: 'Usuario eliminado',
+  notFound: 'Empleado no encontrado',
+  delete: 'Empleado eliminado',
   notValid: 'Los datos ingresados no son correctos',
-  agregarExito: 'Usuario agregado con exito'
+  agregarExito: 'Empleado agregado con exito',
+  updateSuccess: 'Empleado modificado con exito'
 }
 
 const unirRoles = (roles, rolesData) => {
@@ -72,15 +81,36 @@ const AgregarEmpleado = async (req, res, next) => {
   }
 }
 
-const ModificarUsuarios = async (req, res, next) => {
+const ModificarEmpleado = async (req, res, next) => {
   try {
-    const { id } = req.params
-    const { body } = req
-    const usuario = await services.ModificarUsuarios(id, body)
+    await sequelize.transaction(async (t) => {
+      const { id } = req.params
+      const { body } = req
+      let { roles, ...dataEmployee } = body
 
-    if (!usuario) return ERROR_RESPONSE.notFound(msg.notFound, res)
+      const allRoles = await ListarRoles()
+      roles = roles.map((rol) => ({ idRol: rol }))
+      if (!existClientRol(allRoles, roles)) {
+        const clientRol = allRoles.find((rol) => rol.nombre === CLIENTE.name)
+        roles = [...roles, { idRol: clientRol.id }]
+      }
+      if (dataEmployee.password !== '') {
+        const passwordHashed = await hash(dataEmployee.password.toString(), 10)
+        dataEmployee = { ...dataEmployee, password: passwordHashed }
+      }
 
-    res.json(usuario)
+      const employe = await services.ModificarUsuarios(id, dataEmployee, {
+        transaction: t
+      })
+
+      await actualizarRolUser(employe.dataValues.id, roles, {
+        transaction: t
+      })
+
+      if (!employe) return ERROR_RESPONSE.notFound(msg.notFound, res)
+
+      res.json({ message: msg.updateSuccess })
+    })
   } catch (error) {
     next(error)
   }
@@ -103,6 +133,6 @@ module.exports = {
   ListarEmpleados,
   BuscarEmpleado,
   AgregarEmpleado,
-  ModificarUsuarios,
+  ModificarEmpleado,
   EliminarUsuarios
 }

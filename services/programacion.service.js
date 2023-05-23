@@ -13,8 +13,17 @@ async function AgregarProgramaciones(programaciones) {
   return await models.Programacion.bulkCreate(programaciones)
 }
 
+async function EliminarProgramacionesPorIdRuta(id) {
+  return await models.Programacion.destroy({
+    where: {
+      idRuta: id
+    }
+  })
+}
+
 module.exports = {
   ListarProgramaciones,
   BuscarProgramacion,
-  AgregarProgramaciones
+  AgregarProgramaciones,
+  EliminarProgramacionesPorIdRuta
 }
