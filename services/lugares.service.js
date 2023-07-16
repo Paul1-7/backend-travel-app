@@ -2,7 +2,12 @@ const { Op } = require('sequelize')
 const { models } = require('../libs/sequelize.js')
 
 async function ListarLugares() {
-  return await models.Lugares.findAll({ include: ['punto'] })
+  return await models.Lugares.findAll({
+    include: ['punto'],
+    where: {
+      borrado: false
+    }
+  })
 }
 
 async function BuscarLugares(id) {
@@ -36,18 +41,29 @@ async function BuscarLugares(id) {
   })
 }
 
-async function AgregarLugares(lugar) {
-  return await models.Lugares.create(lugar)
+async function AgregarLugares(lugar, options = {}) {
+  return await models.Lugares.create(lugar, options)
 }
 
-async function ModificarLugares(id, cambio) {
-  const user = await models.Lugares.findByPk(id)
-  return await user?.update(cambio)
+async function ModificarLugares(id, data, options = {}) {
+  const result = await models.Lugares.update(data, {
+    where: { id },
+    ...options
+  })
+
+  return result[0] > 0
 }
 
-async function EliminarLugares(id) {
-  const user = await models.Lugares.findByPk(id)
-  return await user?.destroy()
+async function EliminarLugares(id, options) {
+  const result = await models.Lugares.update(
+    { borrado: true },
+    {
+      where: { id },
+      ...options
+    }
+  )
+
+  return result[0] > 0
 }
 
 async function BuscarLugaresPorIds(ids) {

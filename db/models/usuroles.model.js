@@ -18,10 +18,8 @@ const UsurolesSchema = {
   idUsuario: {
     type: DataTypes.STRING,
     field: 'id_usuario',
-    allowNull: false,
     validate: {
-      is: msg.isAlphanumeric,
-      notNull: msg.notNull
+      is: msg.isAlphanumeric
     },
     references: {
       model: USUARIOS_TABLE,
@@ -43,7 +41,7 @@ const UsurolesSchema = {
       key: 'id'
     },
     onUpdate: 'CASCADE',
-    onDelete: 'SET NULL'
+    onDelete: 'CASCADE'
   }
 }
 

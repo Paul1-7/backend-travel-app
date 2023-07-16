@@ -20,9 +20,11 @@ const { DiasSchema } = require('../models/dias.model')
 const { ProgramacionSchema } = require('../models/programacion.model')
 const { HorasSchema } = require('../models/horas.model')
 const { HorariosAtencionSchema } = require('../models/horariosAtencion.model')
+const { ChoferesSchema } = require('../models/choferes.model')
 
 module.exports = {
   async up(queryInterface, Sequelize) {
+    await queryInterface.createTable('Choferes', ChoferesSchema)
     await queryInterface.createTable('Horas', HorasSchema)
     await queryInterface.createTable('Dias', DiasSchema)
     await queryInterface.createTable('Rutas', RutasSchema)
@@ -69,5 +71,6 @@ module.exports = {
     await queryInterface.dropTable('Contrataciones')
     await queryInterface.dropTable('Usuarios')
     await queryInterface.dropTable('Roles')
+    await queryInterface.dropTable('Choferes')
   }
 }

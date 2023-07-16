@@ -15,9 +15,13 @@ async function AgregarPuntos(punto) {
   return await models.Puntos.create(punto)
 }
 
-async function ModificarPuntos(id, cambio) {
-  const user = await models.Puntos.findByPk(id)
-  return await user?.update(cambio)
+async function ModificarPuntosPorIdLugar(idLugar, data, options = {}) {
+  const result = await models.Puntos.update(data, {
+    where: { idLugar },
+    ...options
+  })
+
+  return result[0] > 0
 }
 
 async function EliminarPuntos(id) {
@@ -29,6 +33,6 @@ module.exports = {
   ListarPuntos,
   BuscarPuntos,
   AgregarPuntos,
-  ModificarPuntos,
+  ModificarPuntosPorIdLugar,
   EliminarPuntos
 }

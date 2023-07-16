@@ -27,8 +27,10 @@ const {
   HorariosAtencion,
   HorariosAtencionSchema
 } = require('./horariosAtencion.model.js')
+const { Choferes, ChoferesSchema } = require('./choferes.model.js')
 
 function setUpModels(sequelize) {
+  Choferes.init(ChoferesSchema, Choferes.config(sequelize))
   Horas.init(HorasSchema, Horas.config(sequelize))
   Dias.init(DiasSchema, Dias.config(sequelize))
   Rutas.init(RutasSchema, Rutas.config(sequelize))
@@ -54,6 +56,7 @@ function setUpModels(sequelize) {
   RutaContra.init(RutacontraSchema, RutaContra.config(sequelize))
   RutaReserva.init(RutareservaSchema, RutaReserva.config(sequelize))
 
+  Choferes.associate(sequelize.models)
   Contrataciones.associate(sequelize.models)
   Programacion.associate(sequelize.models)
   HorariosAtencion.associate(sequelize.models)

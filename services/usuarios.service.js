@@ -41,8 +41,8 @@ async function ModificarUsuarios(id, cambio, options = {}) {
   )
 }
 
-async function EliminarUsuarios(id) {
-  const user = await models.Usuarios.findByPk(id)
+async function EliminarUsuario(id, options = {}) {
+  const user = await models.Usuarios.findByPk(id, options)
   return await user?.destroy()
 }
 
@@ -51,6 +51,6 @@ module.exports = {
   BuscarUsuarios,
   AgregarUsuarios,
   ModificarUsuarios,
-  EliminarUsuarios,
+  EliminarUsuario,
   GetUsuariosPorRol
 }

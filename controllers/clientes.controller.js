@@ -4,9 +4,10 @@ const services = require('../services/usuarios.service.js')
 const { AgregarRolUsuario } = require('../services/usuRoles.service.js')
 
 const msg = {
-  notFound: 'Usuario no encontrado',
-  delete: 'Usuario eliminado',
-  agregarExito: 'Usuario agregado con exito'
+  notFound: 'Cliente no encontrado',
+  delete: 'Cliente eliminado',
+  agregarExito: 'Cliente agregado exitosamente',
+  modifySuccess: 'El cliente se modifico exitosamente'
 }
 
 const llenarUsuarioPorDefecto = (user) => {
@@ -55,7 +56,7 @@ const AgregarCliente = async (req, res, next) => {
   }
 }
 
-const ModificarUsuarios = async (req, res, next) => {
+const ModificarCliente = async (req, res, next) => {
   try {
     const { id } = req.params
     const { body } = req
@@ -63,16 +64,16 @@ const ModificarUsuarios = async (req, res, next) => {
 
     if (!usuario) return ERROR_RESPONSE.notFound(msg.notFound, res)
 
-    res.json(usuario)
+    res.json({ message: msg.modifySuccess })
   } catch (error) {
     next(error)
   }
 }
 
-const EliminarUsuarios = async (req, res, next) => {
+const EliminarCliente = async (req, res, next) => {
   try {
     const { id } = req.params
-    const usuario = await services.EliminarUsuarios(id)
+    const usuario = await services.EliminarUsuario(id)
 
     if (!usuario) return ERROR_RESPONSE.notFound(msg.notFound, res)
 
@@ -86,6 +87,6 @@ module.exports = {
   ListarClientes,
   BuscarCliente,
   AgregarCliente,
-  ModificarUsuarios,
-  EliminarUsuarios
+  ModificarCliente,
+  EliminarCliente
 }

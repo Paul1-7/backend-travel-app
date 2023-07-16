@@ -8,11 +8,13 @@ const {
 const services = require('../services/usuarios.service.js')
 const {
   AgregarRolUsuario,
-  actualizarRolUser
+  actualizarRolUser,
+  eliminarRolUser
 } = require('../services/usuRoles.service.js')
 const sequelize = require('../libs/sequelize.js')
 const { existClientRol } = require('../utils/dataHandler.js')
 const { CLIENTE } = require('../config/roles.js')
+const { Transaction } = require('sequelize')
 
 const msg = {
   notFound: 'Empleado no encontrado',
@@ -116,15 +118,24 @@ const ModificarEmpleado = async (req, res, next) => {
   }
 }
 
-const EliminarUsuarios = async (req, res, next) => {
+const EliminarEmpleado = async (req, res, next) => {
+  const t = await sequelize.transaction({
+    isolationLevel: Transaction.ISOLATION_LEVELS.SERIALIZABLE
+  })
   try {
     const { id } = req.params
-    const usuario = await services.EliminarUsuarios(id)
+    await eliminarRolUser(id)
+    const usuario = await services.EliminarUsuario(id, { transaction: t })
 
-    if (!usuario) return ERROR_RESPONSE.notFound(msg.notFound, res)
+    if (!usuario) {
+      await t.rollback()
+      return ERROR_RESPONSE.notFound(msg.notFound, res)
+    }
 
-    res.json({ message: msg.delete })
+    await t.commit()
+    return res.json({ message: msg.delete, id })
   } catch (error) {
+    await t.rollback()
     next(error)
   }
 }
@@ -134,5 +145,5 @@ module.exports = {
   BuscarEmpleado,
   AgregarEmpleado,
   ModificarEmpleado,
-  EliminarUsuarios
+  EliminarEmpleado
 }
