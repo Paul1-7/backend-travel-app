@@ -51,14 +51,10 @@ const RutasSchema = {
       notNull: msg.notNull
     }
   },
-  estado: {
-    type: DataTypes.INTEGER,
-
+  borrado: {
+    type: DataTypes.BOOLEAN,
     allowNull: false,
-    defaultValue: 1,
-    validate: {
-      is: msg.isState
-    }
+    defaultValue: false
   }
 }
 
@@ -69,11 +65,6 @@ class Rutas extends Model {
       as: 'itinerarios',
       foreignKey: 'idRuta',
       otherKey: 'idLugar'
-    })
-
-    this.hasMany(models.Programacion, {
-      as: 'programacion',
-      foreignKey: 'idRuta'
     })
   }
 

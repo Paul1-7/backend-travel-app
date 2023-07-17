@@ -54,7 +54,7 @@ async function ModificarLugares(id, data, options = {}) {
   return result[0] > 0
 }
 
-async function EliminarLugares(id, options) {
+async function EliminarLugares(id, options = {}) {
   const result = await models.Lugares.update(
     { borrado: true },
     {

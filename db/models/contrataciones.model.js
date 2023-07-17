@@ -63,14 +63,13 @@ const ContratacionesSchema = {
 
 class Contrataciones extends Model {
   static associate(models) {
-   this.hasMany(models.Reservas, { foreignKey: 'cod_contra' })
-   this.hasMany(models.Calificaciones, { foreignKey: 'cod_contra' })
-   this.belongsToMany(models.Rutas, { //muchos a muchos
-    through: models.RutaContra,
-    as: 'rutas',
-    foreignKey: 'CodContra',
-    otherKey: 'CodRuta'
-  })
+    this.belongsToMany(models.Rutas, {
+      //muchos a muchos
+      through: models.RutaContra,
+      as: 'rutas',
+      foreignKey: 'CodContra',
+      otherKey: 'CodRuta'
+    })
   }
 
   static config(sequelize) {
@@ -84,4 +83,4 @@ class Contrataciones extends Model {
   }
 }
 
-module.exports = {  Contrataciones, ContratacionesSchema,  CONTRATACIONES_TABLE }
+module.exports = { Contrataciones, ContratacionesSchema, CONTRATACIONES_TABLE }

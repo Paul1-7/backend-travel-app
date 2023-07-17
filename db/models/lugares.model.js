@@ -51,11 +51,6 @@ const LugaresSchema = {
 class Lugares extends Model {
   static associate(models) {
     this.hasMany(models.Puntos, { foreignKey: 'idLugar', as: 'punto' })
-
-    this.hasMany(models.Horarios_Atencion, {
-      as: 'horariosAtencion',
-      foreignKey: 'idLugar'
-    })
   }
 
   static config(sequelize) {

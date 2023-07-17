@@ -1,6 +1,5 @@
 const sequelize = require('../libs/sequelize.js')
 const { ERROR_RESPONSE } = require('../middlewares/error.handle.js')
-const { BuscarDiasPorIds } = require('../services/dias.service.js')
 const services = require('../services/lugares.service.js')
 const {
   AgregarPuntos,

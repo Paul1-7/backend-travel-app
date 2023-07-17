@@ -45,33 +45,6 @@ const ItinerarioSchema = {
     },
     onUpdate: 'CASCADE',
     onDelete: 'SET NULL'
-  },
-  descripcion: {
-    type: DataTypes.STRING,
-
-    allowNull: false,
-    validate: {
-      is: msg.isAlphanumeric,
-      notNull: msg.notNull
-    }
-  },
-  horaInicio: {
-    type: DataTypes.STRING,
-    field: 'hora_inicio',
-    allowNull: false,
-    validate: {
-      is: msg.isAlphanumeric,
-      notNull: msg.notNull
-    }
-  },
-  horaFin: {
-    type: DataTypes.STRING,
-    field: 'hora_fin',
-    allowNull: false,
-    validate: {
-      is: msg.isAlphanumeric,
-      notNull: msg.notNull
-    }
   }
 }
 

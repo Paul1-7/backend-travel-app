@@ -1,16 +1,10 @@
 const { ERROR_RESPONSE } = require('../middlewares/error.handle.js')
-const { BuscarDiasPorIds } = require('../services/dias.service.js')
-const { BuscarHorasPorIds } = require('../services/horas.service.js')
 const {
   AgregarItinerario,
   EliminarItinerarioPorIdRuta,
   ModificarItinerario
 } = require('../services/itinerario.service.js')
-const { BuscarLugaresPorIds } = require('../services/lugares.service.js')
-const {
-  AgregarProgramaciones,
-  EliminarProgramacionesPorIdRuta
-} = require('../services/programacion.service.js')
+
 const services = require('../services/rutas.service.js')
 
 const msg = {
@@ -44,27 +38,7 @@ const BuscarRutas = async (req, res, next) => {
 const AgregarRutas = async (req, res, next) => {
   try {
     const { body } = req
-    const { itinerarios, horarios, ...ruta } = body
-
-    if (horarios.length === 0)
-      return ERROR_RESPONSE.notAcceptable(msg.notValid, res)
-
-    const idLugares = itinerarios.map((lugar) => lugar.idLugar)
-    const lugar = await BuscarLugaresPorIds(idLugares)
-
-    const idDias = horarios.map(({ idDia }) => idDia.id)
-    const idHoras = horarios.map(({ idHorario }) => idHorario).flat()
-    const horasUnicas = [...new Set(idHoras)]
-
-    const dataDias = await BuscarDiasPorIds(idDias)
-    const dataHorarios = await BuscarHorasPorIds(horasUnicas)
-
-    if (
-      itinerarios.length !== lugar.length ||
-      dataDias.length !== idDias.length ||
-      horasUnicas.length !== dataHorarios.length
-    )
-      return ERROR_RESPONSE.notAcceptable(msg.notValid, res)
+    const { itinerarios, ...ruta } = body
 
     const newRuta = await services.AgregarRutas(ruta)
 
@@ -75,16 +49,7 @@ const AgregarRutas = async (req, res, next) => {
       }
     })
 
-    const newProgramacion = horarios.map(({ idDia, idHorario }) =>
-      idHorario.map((item) => ({
-        idRuta: newRuta.id,
-        idDia: idDia.id,
-        idHora: item
-      }))
-    )
-    // console.log(newProgramacion.flat())
     await AgregarItinerario(newItinerarios)
-    await AgregarProgramaciones(newProgramacion.flat())
 
     res.json({
       message: msg.addSuccess

@@ -11,7 +11,7 @@ module.exports = {
           descripcion: 'Ruta del vino y singani',
           duracion: '4 horas',
           precio: 120,
-          estado: 1
+          borrado: false
         },
         {
           id: '3c84f191-f004-4087-9b90-f83768164c75',
@@ -19,7 +19,7 @@ module.exports = {
           descripcion: 'Ruta del vino Aranjuez',
           duracion: '5 horas',
           precio: 150,
-          estado: 1
+          borrado: false
         },
         {
           id: 'eab817c8-329d-467c-a396-51051b24961d',
@@ -27,7 +27,7 @@ module.exports = {
           descripcion: 'Ruta del vino arte vino y tradicion',
           duracion: '4 horas y media',
           precio: 130,
-          estado: 1
+          borrado: false
         }
       ],
       {}
