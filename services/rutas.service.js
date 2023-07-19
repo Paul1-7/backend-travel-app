@@ -12,31 +12,13 @@ async function ListarRutas() {
 async function BuscarRutas(id) {
   return await models.Rutas.findOne({
     include: [
-      'itinerarios',
       {
-        model: models.Programacion,
-        as: 'programacion',
-        attributes: {
-          exclude: ['idDia', 'idHora', 'idRuta']
-        },
-        include: [
-          {
-            model: models.Dias,
-            as: 'dia',
-            attributes: {
-              exclude: ['id']
-            }
-          },
-          {
-            model: models.Horas,
-            as: 'horas',
-            attributes: {
-              exclude: ['id']
-            }
-          }
-        ]
+        model: models.Lugares,
+        as: 'itinerarios',
+        include: [{ model: models.Puntos, as: 'punto' }]
       }
     ],
+
     where: {
       borrado: false,
       id

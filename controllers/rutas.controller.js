@@ -1,7 +1,7 @@
+const sequelize = require('../libs/sequelize.js')
 const { ERROR_RESPONSE } = require('../middlewares/error.handle.js')
 const {
   AgregarItinerario,
-  EliminarItinerarioPorIdRuta,
   ModificarItinerario
 } = require('../services/itinerario.service.js')
 
@@ -60,31 +60,25 @@ const AgregarRutas = async (req, res, next) => {
 }
 
 const ModificarRutas = async (req, res, next) => {
+  const transaction = await sequelize.transaction()
   try {
     const { id } = req.params
     const { body } = req
     const { itinerarios, ...ruta } = body
 
-    const existRuta = await services.BuscarRutas(id)
-    if (!existRuta) return ERROR_RESPONSE.notFound(msg.notFound, res)
+    await services.ModificarRutas(id, ruta, { transaction })
 
-    const idPuntos = itinerarios.map((punto) => punto.CodPunto)
-    const puntos = await BuscarPuntosPorIds(idPuntos)
-
-    if (itinerarios.length !== puntos.length || itinerarios.length <= 0)
-      return ERROR_RESPONSE.notAcceptable(msg.notValid, res)
-
-    await services.ModificarRutas(id, ruta)
-
-    const newItinerarios = itinerarios.map((punto) => {
+    const newItinerarios = itinerarios.map((itinerario) => {
       return {
-        ...punto,
-        CodRuta: id
+        ...itinerario,
+        idRuta: id
       }
     })
-    await ModificarItinerario(id, newItinerarios)
-    res.json(ruta)
+    await ModificarItinerario(id, newItinerarios, { transaction })
+    await transaction.commit()
+    res.json({ message: msg.addSuccess })
   } catch (error) {
+    await transaction.rollback()
     next(error)
   }
 }
@@ -92,12 +86,8 @@ const ModificarRutas = async (req, res, next) => {
 const EliminarRutas = async (req, res, next) => {
   try {
     const { id } = req.params
-    await EliminarItinerarioPorIdRuta(id)
-    await EliminarProgramacionesPorIdRuta(id)
-    const ruta = await services.EliminarRutas(id)
 
-    if (!ruta) return ERROR_RESPONSE.notFound(msg.notFound, res)
-
+    await services.EliminarRutas(id)
     res.json({ message: msg.delete, id })
   } catch (error) {
     next(error)

@@ -1,22 +1,22 @@
 const { Op } = require('sequelize')
 const { models } = require('../libs/sequelize.js')
 
-async function AgregarItinerario(data) {
-  return await models.Itinerario.bulkCreate(data)
+async function AgregarItinerario(data, options = {}) {
+  return await models.Itinerario.bulkCreate(data, options)
 }
 
-async function EliminarItinerarioPorIdRuta(idRuta) {
+async function EliminarItinerarioPorIdRuta(idRuta, options = {}) {
   return await models.Itinerario.destroy({
     where: {
       idRuta
-    }
+    },
+    ...options
   })
 }
 
-async function ModificarItinerario(CodRuta, data) {
-  const removed = await EliminarItinerarioPorIdRuta(CodRuta)
-  const result = removed > 0 ? await models.Itinerario.bulkCreate(data) : null
-  return result
+async function ModificarItinerario(idRuta, data, options = {}) {
+  await EliminarItinerarioPorIdRuta(idRuta, options)
+  await models.Itinerario.bulkCreate(data, options)
 }
 
 async function getProductsBySubsidiariesId(id) {

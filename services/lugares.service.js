@@ -12,32 +12,7 @@ async function ListarLugares() {
 
 async function BuscarLugares(id) {
   return await models.Lugares.findByPk(id, {
-    include: [
-      'punto',
-      {
-        model: models.Horarios_Atencion,
-        as: 'horariosAtencion',
-        attributes: {
-          exclude: ['idDia', 'idHora', 'idLugar']
-        },
-        include: [
-          {
-            model: models.Dias,
-            as: 'dia',
-            attributes: {
-              exclude: ['id']
-            }
-          },
-          {
-            model: models.Horas,
-            as: 'horas',
-            attributes: {
-              exclude: ['id']
-            }
-          }
-        ]
-      }
-    ]
+    include: ['punto']
   })
 }
 
