@@ -4,9 +4,6 @@ const { RutasSchema } = require('../models/rutas.model')
 const { PuntosSchema } = require('../models/puntos.model')
 const { LugaresSchema } = require('../models/lugares.model')
 
-const { InfoagenciaSchema } = require('../models/infoagencia.model')
-const { InfotarijaSchema } = require('../models/infotarija.model')
-
 const { ContratacionesSchema } = require('../models/contrataciones.model')
 const { ImagenesSchema } = require('../models/imagenes.model')
 const { UsuariosSchema } = require('../models/usuarios.model')
@@ -16,26 +13,27 @@ const { ItinerarioSchema } = require('../models/itinerario.model')
 const { RutacontraSchema } = require('../models/rutacontra.model')
 
 const { ChoferesSchema } = require('../models/choferes.model')
+const { PlacesScheduleSchema } = require('../models/horariosLugares.model')
 
 module.exports = {
-  async up(queryInterface, Sequelize) {
+  async up(queryInterface) {
     await queryInterface.createTable('Choferes', ChoferesSchema)
     await queryInterface.createTable('Rutas', RutasSchema)
     await queryInterface.createTable('Contrataciones', ContratacionesSchema)
     await queryInterface.createTable('Lugares', LugaresSchema)
     await queryInterface.createTable('Puntos', PuntosSchema)
 
-    await queryInterface.createTable('Info_agencia', InfoagenciaSchema)
-    await queryInterface.createTable('Info_tarija', InfotarijaSchema)
     await queryInterface.createTable('Imagenes', ImagenesSchema)
     await queryInterface.createTable('Usuarios', UsuariosSchema)
     await queryInterface.createTable('Roles', RolesSchema)
     await queryInterface.createTable('UsuRoles', UsurolesSchema)
     await queryInterface.createTable('Itinerario', ItinerarioSchema)
     await queryInterface.createTable('RutaContra', RutacontraSchema)
+    await queryInterface.createTable('HorariosLugares', PlacesScheduleSchema)
   },
 
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface) {
+    await queryInterface.dropTable('HorariosLugares')
     await queryInterface.dropTable('UsuRoles')
     await queryInterface.dropTable('RutaContra')
     await queryInterface.dropTable('Itinerario')

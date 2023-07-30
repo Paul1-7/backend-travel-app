@@ -1,8 +1,6 @@
 const { Rutas, RutasSchema } = require('./rutas.model.js')
 const { Puntos, PuntosSchema } = require('./puntos.model.js')
 const { Lugares, LugaresSchema } = require('./lugares.model.js')
-const { Info_agencia, InfoagenciaSchema } = require('./infoagencia.model.js')
-const { Info_tarija, InfotarijaSchema } = require('./infotarija.model.js')
 
 const {
   Contrataciones,
@@ -15,14 +13,17 @@ const { UsuRoles, UsurolesSchema } = require('./usuroles.model.js')
 const { Itinerario, ItinerarioSchema } = require('./itinerario.model.js')
 const { RutaContra, RutacontraSchema } = require('./rutacontra.model.js')
 const { Choferes, ChoferesSchema } = require('./choferes.model.js')
+const {
+  PlacesSchedule,
+  PlacesScheduleSchema
+} = require('./horariosLugares.model.js')
 
 function setUpModels(sequelize) {
   Choferes.init(ChoferesSchema, Choferes.config(sequelize))
   Rutas.init(RutasSchema, Rutas.config(sequelize))
   Puntos.init(PuntosSchema, Puntos.config(sequelize))
+  PlacesSchedule.init(PlacesScheduleSchema, PlacesSchedule.config(sequelize))
   Lugares.init(LugaresSchema, Lugares.config(sequelize))
-  Info_agencia.init(InfoagenciaSchema, Info_agencia.config(sequelize))
-  Info_tarija.init(InfotarijaSchema, Info_tarija.config(sequelize))
   Contrataciones.init(ContratacionesSchema, Contrataciones.config(sequelize))
   Imagenes.init(ImagenesSchema, Imagenes.config(sequelize))
   Usuarios.init(UsuariosSchema, Usuarios.config(sequelize))
@@ -38,6 +39,7 @@ function setUpModels(sequelize) {
   Rutas.associate(sequelize.models)
   Lugares.associate(sequelize.models)
   Puntos.associate(sequelize.models)
+  PlacesSchedule.associate(sequelize.models)
 }
 
 module.exports = setUpModels

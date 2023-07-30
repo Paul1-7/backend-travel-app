@@ -25,7 +25,6 @@ routerApi(app)
 
 app.use(errorHandler)
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`http://localhost:${port}`)
 })
-
