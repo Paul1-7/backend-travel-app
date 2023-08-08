@@ -17,12 +17,17 @@ const {
   PlacesSchedule,
   PlacesScheduleSchema
 } = require('./horariosLugares.model.js')
+const {
+  RoutesSchedule,
+  RoutesScheduleSchema
+} = require('./horariosRutas.model.js')
 
 function setUpModels(sequelize) {
   Choferes.init(ChoferesSchema, Choferes.config(sequelize))
   Rutas.init(RutasSchema, Rutas.config(sequelize))
   Puntos.init(PuntosSchema, Puntos.config(sequelize))
   PlacesSchedule.init(PlacesScheduleSchema, PlacesSchedule.config(sequelize))
+  RoutesSchedule.init(RoutesScheduleSchema, RoutesSchedule.config(sequelize))
   Lugares.init(LugaresSchema, Lugares.config(sequelize))
   Contrataciones.init(ContratacionesSchema, Contrataciones.config(sequelize))
   Imagenes.init(ImagenesSchema, Imagenes.config(sequelize))
@@ -40,6 +45,7 @@ function setUpModels(sequelize) {
   Lugares.associate(sequelize.models)
   Puntos.associate(sequelize.models)
   PlacesSchedule.associate(sequelize.models)
+  RoutesSchedule.associate(sequelize.models)
 }
 
 module.exports = setUpModels

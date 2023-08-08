@@ -14,6 +14,7 @@ const { RutacontraSchema } = require('../models/rutacontra.model')
 
 const { ChoferesSchema } = require('../models/choferes.model')
 const { PlacesScheduleSchema } = require('../models/horariosLugares.model')
+const { RoutesScheduleSchema } = require('../models/horariosRutas.model')
 
 module.exports = {
   async up(queryInterface) {
@@ -30,9 +31,11 @@ module.exports = {
     await queryInterface.createTable('Itinerario', ItinerarioSchema)
     await queryInterface.createTable('RutaContra', RutacontraSchema)
     await queryInterface.createTable('HorariosLugares', PlacesScheduleSchema)
+    await queryInterface.createTable('HorariosRutas', RoutesScheduleSchema)
   },
 
   async down(queryInterface) {
+    await queryInterface.dropTable('HorariosRutas')
     await queryInterface.dropTable('HorariosLugares')
     await queryInterface.dropTable('UsuRoles')
     await queryInterface.dropTable('RutaContra')
