@@ -22,7 +22,8 @@ async function buscarHorarioRuta(id) {
   return await models.HorariosRutas.findAll({
     where: {
       idRuta: id
-    }
+    },
+    include: ['ruta']
   })
 }
 

@@ -81,6 +81,18 @@ class Usuarios extends Model {
       foreignKey: 'idUsuario',
       otherKey: 'idRol'
     })
+
+    this.hasMany(models.Contratos, {
+      foreignKey: 'idCliente',
+      as: 'clienteContr',
+      sourceKey: 'id'
+    })
+
+    this.hasMany(models.Contratos, {
+      foreignKey: 'idEmpleado',
+      as: 'empleadoContr',
+      sourceKey: 'id'
+    })
   }
 
   static config(sequelize) {
