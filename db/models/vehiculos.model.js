@@ -1,10 +1,9 @@
 const { Model, DataTypes } = require('sequelize')
 const msg = require('../../utils/validationsMsg.js')
-const { VEHICULOS_TABLE } = require('./vehiculos.model.js')
 
-const CHOFERES_TABLE = 'Choferes'
+const VEHICULOS_TABLE = 'Vehiculos'
 
-const ChoferesSchema = {
+const VehiculosSchema = {
   id: {
     allowNull: false,
     primaryKey: true,
@@ -14,7 +13,7 @@ const ChoferesSchema = {
       isUUID: 4
     }
   },
-  nombre: {
+  modelo: {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
@@ -22,7 +21,7 @@ const ChoferesSchema = {
       notNull: msg.notNull
     }
   },
-  apellido: {
+  tipo: {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
@@ -30,11 +29,19 @@ const ChoferesSchema = {
       notNull: msg.notNull
     }
   },
-  numLicencia: {
+  placa: {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
       is: msg.isAlphanumeric,
+      notNull: msg.notNull
+    }
+  },
+  capacidad: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    validate: {
+      isNumeric: msg.isNumeric,
       notNull: msg.notNull
     }
   },
@@ -42,40 +49,25 @@ const ChoferesSchema = {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
     allowNull: false
-  },
-  idVehiculo: {
-    type: DataTypes.STRING,
-    field: 'id_vehiculo',
-    allowNull: false,
-    validate: {
-      is: msg.isAlphanumeric,
-      notNull: msg.notNull
-    },
-    references: {
-      model: VEHICULOS_TABLE,
-      key: 'id'
-    },
-    onUpdate: 'CASCADE',
-    onDelete: 'SET NULL'
   }
 }
 
-class Choferes extends Model {
+class Vehiculos extends Model {
   static associate(models) {
-    this.belongsTo(models.Vehiculos, {
-      as: 'vehiculo',
-      foreignKey: 'idVehiculo'
+    this.hasMany(models.Choferes, {
+      foreignKey: 'idVehiculo',
+      as: 'vehiculos'
     })
   }
 
   static config(sequelize) {
     return {
       sequelize,
-      tableName: CHOFERES_TABLE,
-      modelName: CHOFERES_TABLE,
+      tableName: VEHICULOS_TABLE,
+      modelName: VEHICULOS_TABLE,
       timestamps: false
     }
   }
 }
 
-module.exports = { Choferes, ChoferesSchema, CHOFERES_TABLE }
+module.exports = { Vehiculos, VehiculosSchema, VEHICULOS_TABLE }
