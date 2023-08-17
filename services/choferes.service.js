@@ -4,7 +4,8 @@ async function ListarChoferes() {
   return await models.Choferes.findAll({
     where: {
       borrado: false
-    }
+    },
+    include: ['vehiculo']
   })
 }
 

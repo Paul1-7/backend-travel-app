@@ -16,16 +16,16 @@ async function BuscarVehiculo(id) {
   })
 }
 
-async function AgregarVehBuscarVehiculo(lugar) {
+async function AgregarVehiculo(lugar) {
   return await models.Vehiculos.create(lugar)
 }
 
-async function ModificarVehBuscarVehiculo(id, cambio) {
+async function ModificarVehiculo(id, cambio) {
   const chofer = await models.Vehiculos.findByPk(id)
   return await chofer?.update(cambio)
 }
 
-async function EliminarVehBuscarVehiculo(id, options = {}) {
+async function EliminarVehiculo(id, options = {}) {
   const result = await models.Vehiculos.update(
     { borrado: true },
     {
@@ -40,7 +40,7 @@ async function EliminarVehBuscarVehiculo(id, options = {}) {
 module.exports = {
   ListarVehiculos,
   BuscarVehiculo,
-  AgregarVehBuscarVehiculo,
-  ModificarVehBuscarVehiculo,
-  EliminarVehBuscarVehiculo
+  AgregarVehiculo,
+  ModificarVehiculo,
+  EliminarVehiculo
 }

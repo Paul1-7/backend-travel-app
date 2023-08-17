@@ -78,7 +78,7 @@ class Rutas extends Model {
       sequelize,
       tableName: RUTAS_TABLE,
       modelName: RUTAS_TABLE,
-      timestamps: true
+      timestamps: false
     }
   }
 }

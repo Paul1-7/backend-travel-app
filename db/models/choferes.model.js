@@ -32,6 +32,7 @@ const ChoferesSchema = {
   },
   numLicencia: {
     type: DataTypes.STRING,
+    field: 'num_licencia',
     allowNull: false,
     validate: {
       is: msg.isAlphanumeric,
