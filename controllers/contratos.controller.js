@@ -31,7 +31,7 @@ const obtenerContratosPorFecha = async (req, res, next) => {
     const options = {
       dateStart,
       dateEnd,
-      orderBy: selectedOption.criteria
+      orderBy: selectedOption?.criteria ?? orderBy
     }
 
     const sales = await services.obtenerContratosPorFecha(options)

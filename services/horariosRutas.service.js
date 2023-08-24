@@ -6,10 +6,10 @@ async function agregarHorarioRuta(data, options = {}) {
 
 async function listarHorariosRutas() {
   return await models.HorariosRutas.findAll({
-    include: ['ruta'],
     where: {
       estado: 1
-    }
+    },
+    include: ['ruta']
   })
 }
 
@@ -21,7 +21,8 @@ async function eliminarHorarioRuta(id) {
 async function buscarHorarioRuta(id) {
   return await models.HorariosRutas.findAll({
     where: {
-      idRuta: id
+      idRuta: id,
+      estado: 1
     },
     include: ['ruta']
   })

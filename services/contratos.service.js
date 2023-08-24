@@ -1,5 +1,6 @@
 const { Op } = require('sequelize')
 const { models } = require('../libs/sequelize.js')
+const sequelize = require('../libs/sequelize.js')
 
 async function ListarContratos() {
   return await models.Contratos.findAll({
@@ -14,17 +15,21 @@ async function BuscarContrato(id) {
 }
 
 async function obtenerContratosPorFecha({ dateStart, dateEnd, orderBy }) {
-  const options = {
-    include: ['cliente', 'empleado', 'ruta'],
-    where: {
-      fecha: {
-        [Op.between]: [dateStart, dateEnd]
-      }
-    },
-    order: [orderBy]
+  if (orderBy !== '4') {
+    const options = {
+      include: ['cliente', 'empleado', 'ruta'],
+      where: {
+        fecha: {
+          [Op.between]: [dateStart, dateEnd]
+        }
+      },
+      order: [orderBy]
+    }
+    return await models.Contratos.findAll(options)
   }
-
-  return await models.Contratos.findAll(options)
+  return await sequelize.query(
+    `SELECT "Contratos"."id_cliente" AS "idCliente", count("id_cliente") AS "contractCount","cliente"."id" AS "cliente.id", "cliente"."nombre" AS "clienteNombre", "cliente"."apellido" AS "clienteApellido" FROM "Contratos" AS "Contratos" LEFT OUTER JOIN "Usuarios" AS "cliente" ON "Contratos"."id_cliente" = "cliente"."id" WHERE "Contratos"."fecha" BETWEEN '${dateStart}' AND '${dateEnd}' GROUP BY "cliente"."id", "cliente"."nombre", "idCliente" ORDER BY "contractCount" DESC;`
+  )
 }
 
 async function AgregarContrato(contratacion) {

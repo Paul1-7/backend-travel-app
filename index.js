@@ -1,6 +1,5 @@
 const express = require('express')
 const cors = require('cors')
-const sequelize = require('./libs/sequelize.js')
 const routerApi = require('./routes/index.js')
 const { errorHandler } = require('./middlewares/error.handle.js')
 
