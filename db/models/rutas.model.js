@@ -71,6 +71,11 @@ class Rutas extends Model {
       foreignKey: 'idRuta',
       otherKey: 'idLugar'
     })
+
+    this.hasMany(models.HorariosRutas, {
+      foreignKey: 'idRuta',
+      as: 'horariosRuta'
+    })
   }
 
   static config(sequelize) {

@@ -51,6 +51,11 @@ const RoutesScheduleSchema = {
 class RoutesSchedule extends Model {
   static associate(models) {
     this.belongsTo(models.Rutas, { as: 'ruta', foreignKey: 'idRuta' })
+
+    this.hasMany(models.Contratos, {
+      foreignKey: 'idHorarioRuta',
+      as: 'contratos'
+    })
   }
 
   static config(sequelize) {

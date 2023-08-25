@@ -2,6 +2,7 @@ const { Model, DataTypes } = require('sequelize')
 const msg = require('../../utils/validationsMsg.js')
 const { RUTAS_TABLE } = require('./rutas.model.js')
 const { USUARIOS_TABLE } = require('./usuarios.model.js')
+const { ROUTES_SCHEDULE_TABLE } = require('./horariosRutas.model.js')
 
 const CONTRATOS_TABLE = 'Contratos'
 
@@ -96,6 +97,20 @@ const ContratosSchema = {
     },
     onUpdate: 'CASCADE',
     onDelete: 'SET NULL'
+  },
+  idHorarioRuta: {
+    type: DataTypes.STRING,
+    field: 'id_horario_ruta',
+    allowNull: false,
+    validate: {
+      isUUID: 4
+    },
+    references: {
+      model: ROUTES_SCHEDULE_TABLE,
+      key: 'id'
+    },
+    onUpdate: 'CASCADE',
+    onDelete: 'SET NULL'
   }
 }
 
@@ -115,6 +130,12 @@ class Contratos extends Model {
     this.belongsTo(models.Usuarios, {
       as: 'empleado',
       foreignKey: 'idEmpleado',
+      targetKey: 'id'
+    })
+
+    this.belongsTo(models.HorariosRutas, {
+      as: 'horariosRuta',
+      foreignKey: 'idHorarioRuta',
       targetKey: 'id'
     })
   }

@@ -21,7 +21,7 @@ module.exports = {
     await queryInterface.createTable('Choferes', ChoferesSchema)
     await queryInterface.createTable('Rutas', RutasSchema)
     await queryInterface.createTable('Usuarios', UsuariosSchema)
-    await queryInterface.createTable('Contratos', ContratosSchema)
+
     await queryInterface.createTable('Lugares', LugaresSchema)
     await queryInterface.createTable('Puntos', PuntosSchema)
 
@@ -29,15 +29,17 @@ module.exports = {
     await queryInterface.createTable('UsuRoles', UsurolesSchema)
     await queryInterface.createTable('Itinerario', ItinerarioSchema)
     await queryInterface.createTable('HorariosLugares', PlacesScheduleSchema)
+
     await queryInterface.createTable('HorariosRutas', RoutesScheduleSchema)
+    await queryInterface.createTable('Contratos', ContratosSchema)
   },
 
   async down(queryInterface) {
+    await queryInterface.dropTable('Contratos')
     await queryInterface.dropTable('HorariosRutas')
     await queryInterface.dropTable('HorariosLugares')
     await queryInterface.dropTable('UsuRoles')
     await queryInterface.dropTable('Itinerario')
-    await queryInterface.dropTable('Contratos')
     await queryInterface.dropTable('Rutas')
     await queryInterface.dropTable('Puntos')
     await queryInterface.dropTable('Lugares')

@@ -17,7 +17,7 @@ async function BuscarContrato(id) {
 async function obtenerContratosPorFecha({ dateStart, dateEnd, orderBy }) {
   if (orderBy !== '4') {
     const options = {
-      include: ['cliente', 'empleado', 'ruta'],
+      include: ['cliente', 'empleado', 'ruta', 'horariosRuta'],
       where: {
         fecha: {
           [Op.between]: [dateStart, dateEnd]

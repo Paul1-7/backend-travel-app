@@ -21,6 +21,32 @@ async function ListarRutas() {
   })
 }
 
+async function ListarRutasConHorarios() {
+  return await models.Rutas.findAll({
+    include: [
+      {
+        model: models.Lugares,
+        as: 'itinerarios',
+        where: { borrado: false },
+        include: [
+          {
+            model: models.HorariosLugares,
+            as: 'horariosLugar'
+          }
+        ]
+      },
+      {
+        model: models.HorariosRutas,
+        as: 'horariosRuta',
+        where: { estado: 1 }
+      }
+    ],
+    where: {
+      borrado: false
+    }
+  })
+}
+
 async function BuscarRutas(id) {
   return await models.Rutas.findOne({
     include: [
@@ -68,5 +94,6 @@ module.exports = {
   BuscarRutas,
   AgregarRutas,
   ModificarRutas,
-  EliminarRutas
+  EliminarRutas,
+  ListarRutasConHorarios
 }

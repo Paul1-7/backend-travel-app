@@ -23,6 +23,15 @@ const ListarRutas = async (req, res, next) => {
   }
 }
 
+const ListarRutasConHorarios = async (req, res, next) => {
+  try {
+    const rutas = await services.ListarRutasConHorarios()
+    res.json(rutas)
+  } catch (error) {
+    next(error)
+  }
+}
+
 const BuscarRutas = async (req, res, next) => {
   try {
     const { id } = req.params
@@ -99,5 +108,6 @@ module.exports = {
   BuscarRutas,
   AgregarRutas,
   ModificarRutas,
-  EliminarRutas
+  EliminarRutas,
+  ListarRutasConHorarios
 }
