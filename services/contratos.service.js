@@ -32,7 +32,7 @@ async function obtenerContratosPorFecha({ dateStart, dateEnd, orderBy }) {
     const options = {
       include: ['cliente', 'empleado', 'ruta', 'horariosRuta'],
       where: {
-        fecha: {
+        fechaSalida: {
           [Op.between]: [dateStart, dateEnd]
         }
       },

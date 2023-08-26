@@ -17,6 +17,19 @@ const {
   RoutesScheduleSchema
 } = require('./horariosRutas.model.js')
 const { Vehiculos, VehiculosSchema } = require('./vehiculos.model.js')
+const { Asignaciones, AsignacionesSchema } = require('./asignaciones.model.js')
+const {
+  AsignacionesContratos,
+  AsignacionesContratosSchema
+} = require('./asignacionesContratos.model.js')
+const {
+  AsignacionesGuias,
+  AsignacionesGuiasSchema
+} = require('./asignacionesGuias.model.js')
+const {
+  AsignacionesVehiculos,
+  AsignacionesVehiculosSchema
+} = require('./asignacionesVehiculos.model.js')
 
 function setUpModels(sequelize) {
   Vehiculos.init(VehiculosSchema, Vehiculos.config(sequelize))
@@ -31,6 +44,20 @@ function setUpModels(sequelize) {
   Roles.init(RolesSchema, Roles.config(sequelize))
   UsuRoles.init(UsurolesSchema, UsuRoles.config(sequelize))
   Itinerario.init(ItinerarioSchema, Itinerario.config(sequelize))
+  //asignacion
+  Asignaciones.init(AsignacionesSchema, Asignaciones.config(sequelize))
+  AsignacionesContratos.init(
+    AsignacionesContratosSchema,
+    AsignacionesContratos.config(sequelize)
+  )
+  AsignacionesGuias.init(
+    AsignacionesGuiasSchema,
+    AsignacionesGuias.config(sequelize)
+  )
+  AsignacionesVehiculos.init(
+    AsignacionesVehiculosSchema,
+    AsignacionesVehiculos.config(sequelize)
+  )
 
   Choferes.associate(sequelize.models)
   Vehiculos.associate(sequelize.models)
@@ -41,6 +68,10 @@ function setUpModels(sequelize) {
   Puntos.associate(sequelize.models)
   PlacesSchedule.associate(sequelize.models)
   RoutesSchedule.associate(sequelize.models)
+  Asignaciones.associate(sequelize.models)
+  AsignacionesContratos.associate(sequelize.models)
+  AsignacionesGuias.associate(sequelize.models)
+  AsignacionesVehiculos.associate(sequelize.models)
 }
 
 module.exports = setUpModels

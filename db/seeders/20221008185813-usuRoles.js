@@ -24,6 +24,16 @@ module.exports = {
           id: 'ad8cd9f1-1028-4c5f-ae20-3ed58113013d',
           id_usuario: '741c6697-22d7-4f87-a4f2-7c835b21176d',
           id_rol: '741c6697-22d7-4f87-a4f2-7c835b21176d'
+        },
+        {
+          id: '1fb63cca-ef00-49cf-8cfb-867438527082',
+          id_usuario: '567c0552-c250-4d69-bc54-482296a95e4b',
+          id_rol: '048ca6cb-cf0e-485e-9ef1-f6ab2522c1db'
+        },
+        {
+          id: 'b3460032-e7f7-4d9f-842f-647a041c9b9b',
+          id_usuario: '741c6697-22d7-4f87-a4f2-7c835b21176d',
+          id_rol: '048ca6cb-cf0e-485e-9ef1-f6ab2522c1db'
         }
       ],
       {}

@@ -14,6 +14,14 @@ const { ChoferesSchema } = require('../models/choferes.model')
 const { PlacesScheduleSchema } = require('../models/horariosLugares.model')
 const { RoutesScheduleSchema } = require('../models/horariosRutas.model')
 const { VehiculosSchema } = require('../models/vehiculos.model')
+const { AsignacionesSchema } = require('../models/asignaciones.model')
+const {
+  AsignacionesContratosSchema
+} = require('../models/asignacionesContratos.model')
+const { AsignacionesGuiasSchema } = require('../models/asignacionesGuias.model')
+const {
+  AsignacionesVehiculosSchema
+} = require('../models/asignacionesVehiculos.model')
 
 module.exports = {
   async up(queryInterface) {
@@ -32,9 +40,26 @@ module.exports = {
 
     await queryInterface.createTable('HorariosRutas', RoutesScheduleSchema)
     await queryInterface.createTable('Contratos', ContratosSchema)
+    await queryInterface.createTable('Asignaciones', AsignacionesSchema)
+    await queryInterface.createTable(
+      'AsignacionesContratos',
+      AsignacionesContratosSchema
+    )
+    await queryInterface.createTable(
+      'AsignacionesGuias',
+      AsignacionesGuiasSchema
+    )
+    await queryInterface.createTable(
+      'AsignacionesVehiculos',
+      AsignacionesVehiculosSchema
+    )
   },
 
   async down(queryInterface) {
+    await queryInterface.dropTable('AsignacionesContratos')
+    await queryInterface.dropTable('AsignacionesGuias')
+    await queryInterface.dropTable('AsignacionesVehiculos')
+    await queryInterface.dropTable('Asignaciones')
     await queryInterface.dropTable('Contratos')
     await queryInterface.dropTable('HorariosRutas')
     await queryInterface.dropTable('HorariosLugares')

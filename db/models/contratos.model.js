@@ -1,4 +1,4 @@
-const { Model, DataTypes } = require('sequelize')
+const { Model, DataTypes, Sequelize } = require('sequelize')
 const msg = require('../../utils/validationsMsg.js')
 const { RUTAS_TABLE } = require('./rutas.model.js')
 const { USUARIOS_TABLE } = require('./usuarios.model.js')
@@ -39,12 +39,18 @@ const ContratosSchema = {
       notNull: msg.notNull
     }
   },
-  fecha: {
+  fechaSalida: {
     type: DataTypes.DATE,
+    field: 'fecha_salida',
     allowNull: false,
     validate: {
       notNull: msg.notNull
     }
+  },
+  fecha: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
   },
   idioma: {
     type: DataTypes.STRING,
