@@ -16,7 +16,12 @@ const ContratosSchema = {
       isUUID: 4
     }
   },
-
+  codReferencia: {
+    allowNull: false,
+    comment: 'codigo de referencia para el contrato',
+    type: DataTypes.STRING,
+    field: 'cod_referencia'
+  },
   monto: {
     type: DataTypes.FLOAT,
     allowNull: false,

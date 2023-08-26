@@ -1,6 +1,7 @@
 const { CONTRACTS_REPORT_ORDER_BY } = require('../constants/reports.js')
 const { ERROR_RESPONSE } = require('../middlewares/error.handle.js')
 const services = require('../services/contratos.service.js')
+const { generateCodeToDocuments } = require('../utils/dataHandler.js')
 
 const msg = {
   notFound: 'Contrato no encontrada',
@@ -56,7 +57,11 @@ const BuscarContrataciones = async (req, res, next) => {
 const AgregarContrataciones = async (req, res, next) => {
   try {
     const { body } = req
-    await services.AgregarContrato(body)
+    const numberSaleCode = await services.ContarCodigoContrato()
+    await services.AgregarContrato({
+      ...body,
+      codReferencia: generateCodeToDocuments('C', numberSaleCode)
+    })
     res.json({ message: msg.addSuccess })
   } catch (error) {
     next(error)
