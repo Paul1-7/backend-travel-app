@@ -34,6 +34,31 @@ module.exports = {
           id: 'b3460032-e7f7-4d9f-842f-647a041c9b9b',
           id_usuario: '741c6697-22d7-4f87-a4f2-7c835b21176d',
           id_rol: '048ca6cb-cf0e-485e-9ef1-f6ab2522c1db'
+        },
+        {
+          id: '7f4b28c2-c53c-4488-a8ea-c1b9c1171847',
+          id_usuario: '6c23e4c3-862b-42a1-b0a5-9a8697b4a836',
+          id_rol: '048ca6cb-cf0e-485e-9ef1-f6ab2522c1db'
+        },
+        {
+          id: '001ba166-0af8-4230-bb51-542399b8a1c9',
+          id_usuario: 'f09a65e5-79b5-4f86-a7e2-3c3bfa5c5f5c',
+          id_rol: '048ca6cb-cf0e-485e-9ef1-f6ab2522c1db'
+        },
+        {
+          id: 'd37b5584-8e1e-420c-b748-dc3cb2fe9838',
+          id_usuario: '89c3a9e1-9c99-42a6-bb15-68f5154a2c46',
+          id_rol: '048ca6cb-cf0e-485e-9ef1-f6ab2522c1db'
+        },
+        {
+          id: 'fd093d33-3811-40f2-94c2-637f57315a5b',
+          id_usuario: 'c231d835-6e1a-43e9-a786-1d62c1303141',
+          id_rol: '050836d0-5747-47c1-8ab1-14a26d05417d'
+        },
+        {
+          id: 'd4fd4e2e-fe6a-4855-8bd1-3b5da5574ad7',
+          id_usuario: 'c231d835-6e1a-43e9-a786-1d62c1303141',
+          id_rol: '048ca6cb-cf0e-485e-9ef1-f6ab2522c1db'
         }
       ],
       {}
