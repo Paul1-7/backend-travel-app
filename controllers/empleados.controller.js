@@ -46,6 +46,16 @@ const ListarEmpleados = async (req, res, next) => {
   }
 }
 
+const ListarGuiasSinAsignacion = async (req, res, next) => {
+  try {
+    const { date } = req.params
+    const clientes = await services.ListarGuiasSinAsignacion(date)
+    res.json(clientes)
+  } catch (error) {
+    next(error)
+  }
+}
+
 const BuscarEmpleado = async (req, res, next) => {
   try {
     const { id } = req.params
@@ -145,5 +155,6 @@ module.exports = {
   BuscarEmpleado,
   AgregarEmpleado,
   ModificarEmpleado,
-  EliminarEmpleado
+  EliminarEmpleado,
+  ListarGuiasSinAsignacion
 }

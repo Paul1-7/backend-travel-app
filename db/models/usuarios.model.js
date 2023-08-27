@@ -93,6 +93,18 @@ class Usuarios extends Model {
       as: 'empleadoContr',
       sourceKey: 'id'
     })
+
+    this.hasMany(models.AsignacionesGuias, {
+      foreignKey: 'idGuia',
+      as: 'asignaciones'
+    })
+
+    this.belongsToMany(models.Asignaciones, {
+      through: models.AsignacionesGuias,
+      as: 'asignaciones2',
+      foreignKey: 'idGuia',
+      otherKey: 'idAsignacion'
+    })
   }
 
   static config(sequelize) {

@@ -1,4 +1,4 @@
-const { Op } = require('sequelize')
+const { Op, Sequelize } = require('sequelize')
 const { models } = require('../libs/sequelize.js')
 const sequelize = require('../libs/sequelize.js')
 const { format } = require('date-fns')
@@ -12,6 +12,73 @@ async function ListarContratos() {
 async function BuscarContrato(id) {
   return await models.Contratos.findByPk(id, {
     include: ['cliente', 'empleado', 'ruta']
+  })
+}
+
+async function ActualizarEstadoAContratos(ids, estado, options = {}) {
+  return await models.Contratos.update(
+    {
+      estado
+    },
+    {
+      where: {
+        id: ids
+      },
+      ...options
+    }
+  )
+}
+
+async function ListarContratosPorRutasFechas(fechaSalida, idRuta) {
+  return await models.Contratos.findAll({
+    include: ['ruta'],
+    where: {
+      estado: {
+        [Op.or]: ['Pendiente', 'Modificado']
+      },
+      fechaSalida,
+      idRuta
+    }
+  })
+}
+
+async function ListarContratosSinAsignacion(date) {
+  return await models.Contratos.findAll({
+    include: [
+      {
+        model: models.Asignaciones,
+        as: 'asignaciones2',
+        through: { attributes: [] }
+      },
+      {
+        model: models.Rutas,
+        as: 'ruta',
+        attributes: ['titulo']
+      }
+    ],
+    where: {
+      estado: {
+        [Op.or]: ['Pendiente', 'Modificado']
+      },
+      fechaSalida: date
+    }
+  })
+}
+
+async function ListarContratosPorAgrupacionRutasFechas() {
+  return await models.Contratos.findAll({
+    attributes: [
+      'fechaSalida',
+      'idRuta',
+      [Sequelize.literal('COUNT(*)'), 'cantidadRegistros']
+    ],
+    include: [{ model: models.Rutas, as: 'ruta', attributes: ['titulo'] }],
+    where: {
+      estado: {
+        [Op.or]: ['Pendiente', 'Modificado']
+      }
+    },
+    group: ['fechaSalida', 'idRuta', 'ruta.titulo', 'ruta.id']
   })
 }
 
@@ -60,5 +127,9 @@ module.exports = {
   AgregarContrato,
   ModificarContrato,
   obtenerContratosPorFecha,
-  ContarCodigoContrato
+  ContarCodigoContrato,
+  ListarContratosPorAgrupacionRutasFechas,
+  ListarContratosPorRutasFechas,
+  ListarContratosSinAsignacion,
+  ActualizarEstadoAContratos
 }

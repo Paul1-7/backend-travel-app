@@ -5,7 +5,8 @@ async function agregarAsignacionesContratos(
   contratos,
   options = {}
 ) {
-  const data = contratos.map(({ idContrato }) => ({ idAsignacion, idContrato }))
+  const data = contratos.map((idContrato) => ({ idAsignacion, idContrato }))
+  console.log('TCL: data', data)
   return await models.AsignacionesContratos.bulkCreate(data, { ...options })
 }
 

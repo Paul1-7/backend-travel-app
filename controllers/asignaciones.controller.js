@@ -5,6 +5,15 @@ const services = require('../services/asignaciones.service.js')
 const {
   agregarAsignacionesContratos
 } = require('../services/asignacionesContratos.service.js')
+const {
+  agregarAsignacionesGuias
+} = require('../services/asignacionesGuias.service.js')
+const {
+  agregarAsignacionesVehiculos
+} = require('../services/asignacionesVehiculos.service.js')
+const {
+  ActualizarEstadoAContratos
+} = require('../services/contratos.service.js')
 const { generateCodeToDocuments } = require('../utils/dataHandler.js')
 
 const msg = {
@@ -61,7 +70,7 @@ const BuscarAsignacion = async (req, res, next) => {
 const AgregarAsignacion = async (req, res, next) => {
   const transaction = await sequelize.transaction()
   try {
-    const { asignacion, contratos, guias, vehiculos } = req.body
+    const { contratos, guias, vehiculos, ...asignacion } = req.body
     const numberSaleCode = await services.ContarCodigoAsignaciones()
 
     const addedAssignment = await services.AgregarAsignacion(
@@ -75,10 +84,14 @@ const AgregarAsignacion = async (req, res, next) => {
     await agregarAsignacionesContratos(addedAssignment.toJSON().id, contratos, {
       transaction
     })
-    await agregarAsignacionesContratos(addedAssignment.toJSON().id, guias, {
+    await agregarAsignacionesGuias(addedAssignment.toJSON().id, guias, {
       transaction
     })
-    await agregarAsignacionesContratos(addedAssignment.toJSON().id, vehiculos, {
+    await agregarAsignacionesVehiculos(addedAssignment.toJSON().id, vehiculos, {
+      transaction
+    })
+
+    await ActualizarEstadoAContratos(contratos, 'Con asignación', {
       transaction
     })
 

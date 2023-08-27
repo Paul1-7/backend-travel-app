@@ -1,7 +1,7 @@
 const { models } = require('../libs/sequelize.js')
 
 async function agregarAsignacionesGuias(idAsignacion, guias, options = {}) {
-  const data = guias.map(({ idGuia }) => ({ idAsignacion, idGuia }))
+  const data = guias.map((idGuia) => ({ idAsignacion, idGuia }))
   return await models.AsignacionesGuias.bulkCreate(data, { ...options })
 }
 

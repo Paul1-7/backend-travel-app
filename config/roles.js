@@ -14,5 +14,9 @@ module.exports = {
   CLIENTE: {
     id: '741c6697-22d7-4f87-a4f2-7c835b21176d',
     name: 'Cliente'
+  },
+  GUIA: {
+    id: '048ca6cb-cf0e-485e-9ef1-f6ab2522c1db',
+    name: 'Guía'
   }
 }

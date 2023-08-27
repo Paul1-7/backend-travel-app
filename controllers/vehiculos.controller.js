@@ -19,6 +19,19 @@ const ListarVehiculos = async (req, res, next) => {
   }
 }
 
+const ListarVehiculosSinAsignacion = async (req, res, next) => {
+  try {
+    console.log('object')
+    const { date } = req.params
+    console.log('TCL: ListarVehiculosSinAsignacion -> date', date)
+
+    const vehiculos = await services.ListarVehiculosSinAsignacion(date)
+    res.json(vehiculos)
+  } catch (error) {
+    next(error)
+  }
+}
+
 const BuscarVehiculo = async (req, res, next) => {
   try {
     const { id } = req.params
@@ -76,5 +89,6 @@ module.exports = {
   BuscarVehiculo,
   AgregarVehiculo,
   ModificarVehiculo,
-  EliminarVehiculo
+  EliminarVehiculo,
+  ListarVehiculosSinAsignacion
 }

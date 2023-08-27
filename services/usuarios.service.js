@@ -1,9 +1,40 @@
 const { Op } = require('sequelize')
 const { models } = require('../libs/sequelize.js')
+const { GUIA } = require('../config/roles.js')
 
 async function ListarUsuarios() {
   return await models.Usuarios.findAll({
     include: { model: models.Roles, as: 'roles', through: { attributes: [] } }
+  })
+}
+
+async function ListarGuiasSinAsignacion(date) {
+  return await models.Usuarios.findAll({
+    include: [
+      {
+        model: models.Roles,
+        as: 'roles',
+        where: {
+          id: GUIA.id
+        },
+        through: { attributes: [] }
+      },
+      {
+        model: models.Asignaciones,
+        as: 'asignaciones2',
+        through: { attributes: [] }
+      }
+    ],
+    where: {
+      [Op.or]: [
+        { '$asignaciones2.id$': null },
+        {
+          '$asignaciones2.fecha$': {
+            [Op.ne]: date
+          }
+        }
+      ]
+    }
   })
 }
 
@@ -52,5 +83,6 @@ module.exports = {
   AgregarUsuarios,
   ModificarUsuarios,
   EliminarUsuario,
-  GetUsuariosPorRol
+  GetUsuariosPorRol,
+  ListarGuiasSinAsignacion
 }

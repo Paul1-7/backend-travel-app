@@ -1,9 +1,32 @@
+const { Op } = require('sequelize')
 const { models } = require('../libs/sequelize.js')
 
 async function ListarVehiculos() {
   return await models.Vehiculos.findAll({
     where: {
       borrado: false
+    }
+  })
+}
+
+async function ListarVehiculosSinAsignacion(date) {
+  return await models.Vehiculos.findAll({
+    include: [
+      {
+        model: models.Asignaciones,
+        as: 'asignaciones2',
+        through: { attributes: [] }
+      }
+    ],
+    where: {
+      [Op.or]: [
+        { '$asignaciones2.id$': null },
+        {
+          '$asignaciones2.fecha$': {
+            [Op.ne]: date
+          }
+        }
+      ]
     }
   })
 }
@@ -42,5 +65,6 @@ module.exports = {
   BuscarVehiculo,
   AgregarVehiculo,
   ModificarVehiculo,
-  EliminarVehiculo
+  EliminarVehiculo,
+  ListarVehiculosSinAsignacion
 }

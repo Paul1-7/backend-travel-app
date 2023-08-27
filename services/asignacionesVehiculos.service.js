@@ -5,7 +5,7 @@ async function agregarAsignacionesVehiculos(
   vehiculos,
   options = {}
 ) {
-  const data = vehiculos.map(({ idVehiculo }) => ({ idAsignacion, idVehiculo }))
+  const data = vehiculos.map((idVehiculo) => ({ idAsignacion, idVehiculo }))
   return await models.AsignacionesVehiculos.bulkCreate(data, { ...options })
 }
 

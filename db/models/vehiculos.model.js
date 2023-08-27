@@ -58,6 +58,18 @@ class Vehiculos extends Model {
       foreignKey: 'idVehiculo',
       as: 'vehiculos'
     })
+
+    this.hasMany(models.AsignacionesVehiculos, {
+      foreignKey: 'idVehiculo',
+      as: 'asignaciones'
+    })
+
+    this.belongsToMany(models.Asignaciones, {
+      through: models.AsignacionesVehiculos,
+      as: 'asignaciones2',
+      foreignKey: 'idVehiculo',
+      otherKey: 'idAsignacion'
+    })
   }
 
   static config(sequelize) {

@@ -1,7 +1,29 @@
+const { format } = require('date-fns')
 const { models } = require('../libs/sequelize.js')
+const { Op } = require('sequelize')
 
 async function ListarAsignaciones() {
-  return await models.Asignaciones.findAll({})
+  return await models.Asignaciones.findAll({
+    include: [
+      {
+        model: models.AsignacionesContratos,
+        as: 'contratos',
+        include: [
+          {
+            model: models.Contratos,
+            as: 'contrato',
+            include: [
+              {
+                model: models.Rutas,
+                as: 'ruta',
+                attributes: ['titulo']
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  })
 }
 
 async function BuscarAsignacion(id) {

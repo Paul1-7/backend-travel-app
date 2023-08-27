@@ -18,6 +18,40 @@ const ListarContrataciones = async (req, res, next) => {
   }
 }
 
+const ListarContratosSinAsignacion = async (req, res, next) => {
+  try {
+    const { date } = req.params
+    const contratos = await services.ListarContratosSinAsignacion(date)
+    res.json(contratos)
+  } catch (error) {
+    next(error)
+  }
+}
+
+const ListarContratacionesPorAgrupacion = async (req, res, next) => {
+  try {
+    const contrataciones =
+      await services.ListarContratosPorAgrupacionRutasFechas()
+    res.json(contrataciones)
+  } catch (error) {
+    next(error)
+  }
+}
+
+const ListarContratosPorRutasFechas = async (req, res, next) => {
+  try {
+    console.log(req.query)
+    const { fechaSalida, idRuta } = req.query
+    const contrataciones = await services.ListarContratosPorRutasFechas(
+      fechaSalida,
+      idRuta
+    )
+    res.json(contrataciones)
+  } catch (error) {
+    next(error)
+  }
+}
+
 const obtenerContratosPorFecha = async (req, res, next) => {
   try {
     const { dateStart, dateEnd, orderBy } = req.query || {}
@@ -87,5 +121,8 @@ module.exports = {
   BuscarContrataciones,
   AgregarContrataciones,
   ModificarContrataciones,
-  obtenerContratosPorFecha
+  obtenerContratosPorFecha,
+  ListarContratacionesPorAgrupacion,
+  ListarContratosPorRutasFechas,
+  ListarContratosSinAsignacion
 }

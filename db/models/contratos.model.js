@@ -31,13 +31,19 @@ const ContratosSchema = {
     }
   },
   cantidadPersonas: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     field: 'cantidad_personas',
     allowNull: false,
     validate: {
       is: msg.isAlphanumeric,
       notNull: msg.notNull
     }
+  },
+  personasAsignadas: {
+    type: DataTypes.INTEGER,
+    field: 'personas_asignadas',
+    allowNull: false,
+    defaultValue: 0
   },
   fechaSalida: {
     type: DataTypes.DATE,
@@ -82,7 +88,7 @@ const ContratosSchema = {
   },
   idEmpleado: {
     type: DataTypes.STRING,
-    field: 'id_cliente',
+    field: 'id_empleado',
     allowNull: false,
     validate: {
       is: msg.isAlphanumeric,
@@ -148,6 +154,18 @@ class Contratos extends Model {
       as: 'horariosRuta',
       foreignKey: 'idHorarioRuta',
       targetKey: 'id'
+    })
+
+    this.hasMany(models.AsignacionesContratos, {
+      foreignKey: 'idContrato',
+      as: 'asignaciones'
+    })
+
+    this.belongsToMany(models.Asignaciones, {
+      through: models.AsignacionesContratos,
+      as: 'asignaciones2',
+      foreignKey: 'idContrato',
+      otherKey: 'idAsignacion'
     })
   }
 
