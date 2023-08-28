@@ -7,10 +7,11 @@ module.exports = {
       [
         {
           id: 'e57e500b-5162-4159-bba7-732228c10ed8',
-          nombre: 'Lucas',
-          apellido: 'Rivers Santos',
-          usuario: 'lucas1234',
-          password: 'lucas1234',
+          nombre: 'Luciana',
+          apellido: 'Garcia',
+          usuario: 'luciana1234',
+          password:
+            '$2b$10$LOg5Qvu7Y9qvJnc7APKdC.imXeVuB8Jom45kX.vz0MV2WOiE.F64y',
           telefono: '17919825',
           ci: '23423422'
         },
@@ -19,7 +20,8 @@ module.exports = {
           nombre: 'Pedro Luis',
           apellido: 'Rios Garcia',
           usuario: 'pedro1234',
-          password: 'pedro1234',
+          password:
+            '$2y$10$p2Z9Kw4iW7JJUBRq.IuOjuW.K/F6yiVuWFWou451cxZaAFaQjxlSG',
           telefono: '1919191',
           ci: '5342452435'
         },
@@ -28,7 +30,8 @@ module.exports = {
           nombre: 'Nahuel',
           apellido: 'Nilo Martinez',
           usuario: 'nahuel1234',
-          password: 'nahuel1234',
+          password:
+            '$2y$10$E2i0IgkQYFxR2c6.54LbKeE413M.Mq1gi91rEMqSDtoG7R0UIjcxq',
           telefono: '71929191',
           ci: '523523343'
         },

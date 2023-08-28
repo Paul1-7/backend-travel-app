@@ -45,6 +45,15 @@ async function BuscarUsuarios(id, options) {
   })
 }
 
+async function BuscarUsuario(options) {
+  return await models.Usuarios.findOne({
+    include: [
+      { model: models.Roles, as: 'roles', through: { attributes: [] } }
+    ],
+    ...options
+  })
+}
+
 async function AgregarUsuarios(usuario) {
   return await models.Usuarios.create(usuario)
 }
@@ -84,5 +93,6 @@ module.exports = {
   ModificarUsuarios,
   EliminarUsuario,
   GetUsuariosPorRol,
-  ListarGuiasSinAsignacion
+  ListarGuiasSinAsignacion,
+  BuscarUsuario
 }

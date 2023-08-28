@@ -95,11 +95,11 @@ async function ContarCodigoContrato() {
 }
 
 async function obtenerContratosPorFecha({ dateStart, dateEnd, orderBy }) {
-  if (orderBy !== '4') {
+  if (orderBy !== '4' && orderBy !== '5') {
     const options = {
       include: ['cliente', 'empleado', 'ruta', 'horariosRuta'],
       where: {
-        fechaSalida: {
+        fecha: {
           [Op.between]: [dateStart, dateEnd]
         }
       },
@@ -107,9 +107,15 @@ async function obtenerContratosPorFecha({ dateStart, dateEnd, orderBy }) {
     }
     return await models.Contratos.findAll(options)
   }
-  return await sequelize.query(
-    `SELECT "Contratos"."id_cliente" AS "idCliente", count("id_cliente") AS "contractCount","cliente"."id" AS "cliente.id", "cliente"."nombre" AS "clienteNombre", "cliente"."apellido" AS "clienteApellido" FROM "Contratos" AS "Contratos" LEFT OUTER JOIN "Usuarios" AS "cliente" ON "Contratos"."id_cliente" = "cliente"."id" WHERE "Contratos"."fecha" BETWEEN '${dateStart}' AND '${dateEnd}' GROUP BY "cliente"."id", "cliente"."nombre", "idCliente" ORDER BY "contractCount" DESC;`
-  )
+  if (orderBy === '4')
+    return await sequelize.query(
+      `SELECT "Contratos"."id_cliente" AS "idCliente", count("id_cliente") AS "contractCount","cliente"."id" AS "cliente.id", "cliente"."nombre" AS "clienteNombre", "cliente"."apellido" AS "clienteApellido" FROM "Contratos" AS "Contratos" LEFT OUTER JOIN "Usuarios" AS "cliente" ON "Contratos"."id_cliente" = "cliente"."id" WHERE "Contratos"."fecha" BETWEEN '${dateStart}' AND '${dateEnd}' GROUP BY "cliente"."id", "cliente"."nombre", "idCliente" ORDER BY "contractCount" DESC;`
+    )
+
+  if (orderBy === '5')
+    return await sequelize.query(
+      `SELECT "Contratos"."id_ruta" AS "idRuta", count("id_ruta") AS "routeCount", "Rutas"."titulo" AS "ruta" FROM "Contratos" AS "Contratos" LEFT OUTER JOIN "Rutas" AS "Rutas" ON "Contratos"."id_ruta" = "Rutas"."id"  WHERE "Contratos"."fecha" BETWEEN '${dateStart}' AND '${dateEnd}' GROUP BY "Contratos"."id_ruta", "Rutas"."titulo", "idRuta" ORDER BY "routeCount" DESC;`
+    )
 }
 
 async function AgregarContrato(contratacion) {

@@ -28,9 +28,23 @@ async function ListarAsignaciones() {
 
 async function BuscarAsignacion(id) {
   return await models.Asignaciones.findByPk(id, {
-    where: {
-      borrado: false
-    }
+    include: [
+      {
+        model: models.Contratos,
+        as: 'asigCont',
+        include: ['ruta']
+      },
+      {
+        model: models.Usuarios,
+        as: 'asigGuias',
+        through: []
+      },
+      {
+        model: models.Vehiculos,
+        as: 'asigVeh',
+        through: []
+      }
+    ]
   })
 }
 

@@ -39,10 +39,7 @@ const UsuariosSchema = {
   },
   password: {
     type: DataTypes.STRING,
-    allowNull: true,
-    validate: {
-      is: msg.isAlphanumeric
-    }
+    allowNull: true
   },
   ci: {
     type: DataTypes.STRING,

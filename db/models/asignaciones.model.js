@@ -62,6 +62,27 @@ class Asignaciones extends Model {
       foreignKey: 'idAsignacion',
       as: 'vehiculos'
     })
+
+    this.belongsToMany(models.Contratos, {
+      through: models.AsignacionesContratos,
+      as: 'asigCont',
+      foreignKey: 'idAsignacion',
+      otherKey: 'idContrato'
+    })
+
+    this.belongsToMany(models.Usuarios, {
+      through: models.AsignacionesGuias,
+      as: 'asigGuias',
+      foreignKey: 'idAsignacion',
+      otherKey: 'idGuia'
+    })
+
+    this.belongsToMany(models.Vehiculos, {
+      through: models.AsignacionesVehiculos,
+      as: 'asigVeh',
+      foreignKey: 'idAsignacion',
+      otherKey: 'idVehiculo'
+    })
   }
 
   static config(sequelize) {

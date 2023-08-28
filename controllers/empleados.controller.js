@@ -79,7 +79,11 @@ const AgregarEmpleado = async (req, res, next) => {
 
     const rolCliente = await BuscarRolPorNombre('Cliente')
 
-    const empleadoGuardado = await services.AgregarUsuarios(datosEmpleado)
+    const hashedPwd = await hash(datosEmpleado.password, 10)
+    const empleadoGuardado = await services.AgregarUsuarios({
+      ...datosEmpleado,
+      password: hashedPwd
+    })
 
     const { id: idUsuario } = empleadoGuardado
     const { id } = rolCliente
