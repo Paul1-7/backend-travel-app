@@ -9,9 +9,9 @@ module.exports = {
           id: 'e57e500b-5162-4159-bba7-732228c10ed8',
           nombre: 'Luciana',
           apellido: 'Garcia',
-          usuario: 'luciana1234',
+          usuario: 'admin',
           password:
-            '$2b$10$LOg5Qvu7Y9qvJnc7APKdC.imXeVuB8Jom45kX.vz0MV2WOiE.F64y',
+            '$2a$10$z57unuipOMKJXwryVtwOouX.YGS6iIH835WXoInk2dZHD2P7GrBwC',
           telefono: '17919825',
           ci: '23423422'
         },
